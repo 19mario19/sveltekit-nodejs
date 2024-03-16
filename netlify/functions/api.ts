@@ -7,6 +7,9 @@ const router = Router()
 router.get("/hello", (req, res) => {
     return res.status(200).json({message: "Hello there!"})
 })
+router.get("/test", (req, res) => {
+    return res.status(200).json({message: "test!"})
+})
 
 api.use("/api/", router)
 
