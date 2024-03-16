@@ -1,11 +1,12 @@
 import type { PageServerLoad } from "./$types"
 
 export const load = (async ({ fetch }) => {
-  const res = await fetch("/api/hello")
-  const { message } = await res.json()
+  const res = await fetch("/api/")
+  const { notes } = await res.json()
 
-  const res1 = await fetch("/api/test")
-  const { message: mssg } = await res1.json()
+  const res1 = await fetch("/api/1")
+  const { note } = await res1.json()
+  console.log(note)
 
-  return { message, mssg }
+  return { notes, note }
 }) satisfies PageServerLoad
