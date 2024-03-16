@@ -44,7 +44,7 @@ router.get("/", (req, res) => {
 
 router.get("/:id", (req, res) => {
   const { id } = req.params
-  let note = notes.filter((el) => el.id == id)
+  let note = notes.find((el) => el.id == id)
   return res.status(200).json({ note })
 })
 
