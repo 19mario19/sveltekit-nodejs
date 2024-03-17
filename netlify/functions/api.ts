@@ -1,53 +1,34 @@
-import express, { Router } from "express"
-import serverless from "serverless-http"
+// Import required modules
+import express from "express" // Express.js framework for handling HTTP requests
+import serverless from "serverless-http" // Library for deploying Express.js apps to serverless platforms
+import dotenv from "dotenv" // Library for loading environment variables from a .env file
+import mongoose from "mongoose" // MongoDB ODM (Object Data Modeling) library for Node.js
+import cors from "cors" // Middleware for enabling Cross-Origin Resource Sharing (CORS)
+import noteRoutes from "./routes/noteRoutes" // Importing router module for note-related routes
 
+// Load environment variables from .env file into process.env
+dotenv.config()
+
+// Create an instance of the Express application
 const api = express()
 
-type Note = {
-  id: string | number
-  name: string
-  createdAt: Date
-}
+// Enable CORS middleware to allow cross-origin requests
+api.use(cors())
 
-const notes: Note[] = [
-  {
-    id: 1,
-    name: "Meeting Agenda",
-    createdAt: new Date("2024-03-16T08:00:00"),
-  },
-  {
-    id: 2,
-    name: "Shopping List",
-    createdAt: new Date("2024-03-16T12:00:00"),
-  },
-  {
-    id: 3,
-    name: "Project Ideas",
-    createdAt: new Date("2024-03-15T15:30:00"),
-  },
-  {
-    id: 4,
-    name: "Personal Journal",
-    createdAt: new Date("2024-03-14T10:45:00"),
-  },
-  {
-    id: 5,
-    name: "Daily Reflections",
-    createdAt: new Date("2024-03-13T18:20:00"),
-  },
-]
+// Parse incoming request bodies as JSON
+api.use(express.json())
 
-const router = Router()
-router.get("/", (req, res) => {
-  return res.status(200).json({ notes })
+// MongoDB connection
+if (process.env.MONGO_URL) mongoose.connect(process.env.MONGO_URL) // Connect to MongoDB using the provided connection URI
+const db = mongoose.connection // Get the default Mongoose connection
+db.on("error", console.error.bind(console, "MongoDB connection error:")) // Event listener for MongoDB connection errors
+db.once("open", () => {
+  // Event listener for successful MongoDB connection
+  console.log("Connected to MongoDB")
 })
 
-router.get("/:id", (req, res) => {
-  const { id } = req.params
-  let note = notes.find((el) => el.id == id)
-  return res.status(200).json({ note })
-})
+// Mount the noteRoutes router at the /api/ path
+api.use("/api/", noteRoutes)
 
-api.use("/api/", router)
-
+// Export the Express application wrapped with serverless-http for deployment
 export const handler = serverless(api)

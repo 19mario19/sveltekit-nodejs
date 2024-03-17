@@ -1,41 +1,59 @@
 <script lang="ts">
+  import { invalidateAll } from "$app/navigation"
+  import { browser } from "$app/environment"
   import type { PageData } from "./$types"
 
   export let data: PageData
 
-  type Note = {
-  id: string | number
-  name: string
-  createdAt: Date
-}
+  let name = ""
 
-
-  let note : Note
-  let id = 1
-
-  async function submit(id: Number | string) {
-    const res = await fetch(`/api/${id}`)
-    const data = await res.json()
-
-    note = data.note
+  function resetName() {
+    name = ""
   }
 
-  $: console.log(note)
+  // post
+  async function postNote(name: string) {
+    try {
+      const res = await fetch("/api/notes/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name }),
+      })
+
+      if (!res.ok) {
+        throw new Error("Failed to create note")
+      }
+
+      resetName()
+      const data = await res.json()
+      // refreshes the data from load function
+      if (browser) invalidateAll()
+      console.log("New note created:", data.note)
+    } catch (error) {
+      console.error("Error:", error.message)
+    } finally {
+      console.log("Fetch operation has finished!")
+    }
+  }
 </script>
+
+<input
+  type="text"
+  name=""
+  id=""
+  bind:value={name}
+  on:keydown={(e) => {
+    if (e.key === "Enter") {
+      postNote(name)
+    }
+  }}
+/>
+<button on:click={() => postNote(name)}>Post</button>
 
 <div class="notes">
   <pre class="json-pre">{JSON.stringify(data.notes, null, 4)}</pre>
   <hr />
   <pre class="json-pre">{JSON.stringify(data.note, null, 4)}</pre>
-
-  <form on:submit={() => submit(id)}>
-    <input min="1" max="5" type="number" bind:value={id} />
-    <button>Submit</button>
-  </form>
-
-  {#if note}
-  <hr />
-  <pre class="json-pre">{JSON.stringify(note, null, 4)}</pre>
-  <hr />
-  {/if}
 </div>
