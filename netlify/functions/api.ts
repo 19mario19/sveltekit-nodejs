@@ -4,7 +4,7 @@ import serverless from "serverless-http" // Library for deploying Express.js app
 import dotenv from "dotenv" // Library for loading environment variables from a .env file
 import mongoose from "mongoose" // MongoDB ODM (Object Data Modeling) library for Node.js
 import cors from "cors" // Middleware for enabling Cross-Origin Resource Sharing (CORS)
-import noteRoutes from "./routes/noteRoutes" // Importing router module for note-related routes
+import blogPostRoutes from "./routes/blogPostRoutes" // Importing router module for note-related routes
 
 // Load environment variables from .env file into process.env
 dotenv.config()
@@ -27,8 +27,8 @@ db.once("open", () => {
   console.log("Connected to MongoDB")
 })
 
-// Mount the noteRoutes router at the /api/ path
-api.use("/api/", noteRoutes)
+// Mount the blogPostRoutes router at the /api/ path
+api.use("/api/", blogPostRoutes)
 
 // Export the Express application wrapped with serverless-http for deployment
 export const handler = serverless(api)
