@@ -1,5 +1,10 @@
 enum PersonName {
   DenaliBella = "Denali Bella",
+  JohnSmith = "John Smith",
+  MaryJohnson = "Mary Johnson",
+  DavidBrown = "David Brown",
+  SarahWilson = "Sarah Wilson",
+  MichaelMiller = "Michael Miller",
 }
 
 type Author = {
@@ -35,8 +40,6 @@ enum ContentTypes {
   Description = "description",
   Image = "image",
   Quote = "quote",
-  Unordered_List = "ul",
-  Ordered_List = "ol",
 }
 
 type BlogPost = {
