@@ -41,12 +41,51 @@
         .filter((el) => el !== undefined) as ParagraphContent[]
     }
   }
-  let formData: BlogPost = {
-    title: "",
-    subtitle: "",
-    category: BlogCategory.Art,
-    author: recordAuthors[PersonName.DenaliBella],
-    content: [],
+  // let formData: BlogPost = {
+  //   title: "",
+  //   subtitle: "",
+  //   category: BlogCategory.Art,
+  //   author: recordAuthors[PersonName.DenaliBella],
+  //   content: [],
+  // }
+
+  let formData : BlogPost= {
+    title: "The Ultimate Guide to Baking Cookies",
+    subtitle:
+      "Delicious recipes and tips for baking perfect cookies every time",
+    content: [
+      {
+        id: 1,
+        subheading: "Introduction to Baking Cookies",
+      },
+      {
+        id: 2,
+        description:
+          "Classic Chocolate Chip Cookies - One of the most beloved cookie recipes is the classic chocolate chip cookie. With its perfect balance of sweet and savory flavors, it's sure to please any palate. Try our recipe for soft and chewy chocolate chip cookies that are sure to become a family favorite.",
+      },
+      {
+        id: 3,
+        image: "https://i.imgur.com/wAJ8AII.jpeg",
+      },
+      {
+        id: 4,
+        subtitle: "Tips for Perfect Cookies",
+      },
+      {
+        id: 5,
+        description:
+          "Achieving the perfect cookie requires attention to detail and a few handy tips. From properly measuring ingredients to ensuring the oven is at the correct temperature, we'll cover everything you need to know to bake cookies like a pro.",
+      },
+      {
+        id: 6,
+        subtitle: "Decorating and Serving Ideas",
+      },
+      {
+        id: 7,
+        description:
+          "Once your cookies are baked to perfection, it's time to get creative with decorating and serving. Whether you prefer classic cookies with a glass of milk or elaborate cookie platters for special occasions, we'll provide inspiration and tips for making your cookies look as good as they taste.",
+      },
+    ],
   }
 
   enum Component {
@@ -79,37 +118,47 @@
           <pre>{JSON.stringify(formData, null, 4)}</pre>
         </div>
       {:else if active === Component.Preview}
-        <!-- Add this code inside the "preview" div -->
         <div class="preview">
           <h1>Preview</h1>
-          <div class="top">
+             <div class="top">
             <h2>{formData.title}</h2>
             <h3>{formData.subtitle}</h3>
+            <div class="bottom">
+
+              <p><strong>Category</strong>: {formData.category}</p>
+              {#if formData.author}
+              <p><strong>By</strong> {formData.author.name}</p>
+              <p><strong>Description</strong> : {formData.author.description}</p>
+              {/if}
+              <p><strong>{new Date().toLocaleDateString()}</strong> </p>
+            </div>
           </div>
-          {#if formData.content}
-            {#each formData.content as item}
-              <div>
-                {#if item.subheading !== undefined}
-                  <h4>{item.subheading}</h4>
-                {/if}
-                {#if item.subtitle !== undefined}
-                  <h5>{item.subtitle}</h5>
-                {/if}
-                {#if item.description !== undefined}
-                  <p>{item.description}</p>
-                {/if}
-                {#if item.image !== undefined}
-                  <img src={item.image} alt="" />
-                {/if}
-                {#if item.quote !== undefined}
-                  <blockquote>
-                    <p>{item.quote.content}</p>
-                    <footer>{item.quote.author}</footer>
-                  </blockquote>
-                {/if}
-              </div>
-            {/each}
-          {/if}
+          <div class="content">
+            {#if formData.content}
+              {#each formData.content as item}
+                <div>
+                  {#if item.subheading !== undefined}
+                    <h4>{item.subheading}</h4>
+                  {/if}
+                  {#if item.subtitle !== undefined}
+                    <h5>{item.subtitle}</h5>
+                  {/if}
+                  {#if item.description !== undefined}
+                    <p>{item.description}</p>
+                  {/if}
+                  {#if item.image !== undefined}
+                    <img src={item.image} alt="" />
+                  {/if}
+                  {#if item.quote !== undefined}
+                    <blockquote>
+                      <p>{item.quote.content}</p>
+                      <footer>{item.quote.author}</footer>
+                    </blockquote>
+                  {/if}
+                </div>
+              {/each}
+            {/if}
+          </div>
         </div>
       {/if}
     </div>
@@ -164,7 +213,7 @@
                     placeholder="Subheading"
                     class="content-input"
                   />
-                  <button on:click={() => removeContent(item.id)}>Remove</button
+                  <button on:click={() => removeContent(item.id)}>X</button
                   >
                 {/if}
                 {#if item.subtitle !== undefined}
@@ -174,7 +223,7 @@
                     placeholder="Subtitle"
                     class="content-input"
                   />
-                   <button on:click={() => removeContent(item.id)}>Remove</button
+                  <button on:click={() => removeContent(item.id)}>X</button
                   >
                 {/if}
                 {#if item.description !== undefined}
@@ -183,7 +232,7 @@
                     placeholder="Description"
                     class="content-textarea"
                   ></textarea>
-                   <button on:click={() => removeContent(item.id)}>Remove</button
+                  <button on:click={() => removeContent(item.id)}>X</button
                   >
                 {/if}
                 {#if item.image !== undefined}
@@ -194,7 +243,7 @@
                     class="content-input"
                   />
                   <img src={item.image} alt="" />
-                   <button on:click={() => removeContent(item.id)}>Remove</button
+                  <button on:click={() => removeContent(item.id)}>X</button
                   >
                 {/if}
                 {#if item.quote !== undefined}
@@ -210,8 +259,9 @@
                       placeholder="Quote"
                       class="content-textarea"
                     ></textarea>
-                     <button on:click={() => removeContent(item.id)}>Remove</button
-                  >
+                    <button on:click={() => removeContent(item.id)}
+                      >Remove</button
+                    >
                   </div>
                 {/if}
               </div>
@@ -243,8 +293,10 @@
 
   .wrapper {
     display: grid;
-    grid-template-columns: 2fr 5fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5rem;
     padding: 5rem;
+    box-shadow: var(--bs-lg); ;
   }
 
   .page {
@@ -300,10 +352,13 @@
   input {
     font-size: 30px;
     padding: 1rem 2rem;
+    width: 100%;
+    word-break: break-all;
   }
 
   pre {
     font-size: 15px;
+    white-space: pre-wrap; /* Add this line */
   }
 
   img {
@@ -319,9 +374,22 @@
     font-size: 30px;
   }
 
+  .tabs {
+    text-align: center;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  h1 {
+    text-align: center;
+    border-bottom: 1px solid;
+  }
+
   .preview h1,
-  .json h1{
+  .json h1 {
     font-family: var(--font-t);
+    padding: 1.5rem 2rem;
   }
   .preview,
   .preview .top,
@@ -330,14 +398,24 @@
     flex-direction: column;
     padding: 2rem 0;
   }
-  .preview .top{
+  .preview .top {
     gap: 1.2rem;
-    
-   }
+  }
 
-   .preview h2, .preview h3 {
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .preview h2,
+  .preview h3 {
     text-align: center;
-   }
+  }
 
-
+  button {
+    border-radius: 50%;
+    margin: .5rem 0;
+    
+  }
 </style>
