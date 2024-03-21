@@ -8,5 +8,8 @@ export const load = (async ({ fetch }) => {
   // const { note } = await res1.json()
   // console.log(note)
 
+  let test = "dnfsjanjsaffnsdjalkfnk"
+  
+
   return { blogPosts }
 }) satisfies PageServerLoad

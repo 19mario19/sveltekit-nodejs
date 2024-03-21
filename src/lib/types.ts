@@ -1,3 +1,5 @@
+type ID = string | number
+
 enum PersonName {
   DenaliBella = "Denali Bella",
   JohnSmith = "John Smith",
@@ -25,6 +27,7 @@ type Quote = {
 }
 
 type ParagraphContent = {
+  id: ID
   subheading?: string
   subtitle?: string
   description?: string
@@ -57,4 +60,4 @@ enum ApiRoutes {
 
 export { PersonName, BlogCategory, ApiRoutes, ContentTypes }
 
-export type { Author, ParagraphContent, BlogPost, Quote }
+export type { ID,Author, ParagraphContent, BlogPost, Quote }

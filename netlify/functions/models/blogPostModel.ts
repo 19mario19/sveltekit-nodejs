@@ -53,6 +53,7 @@ const blogPostSchema = new Schema(
   { timestamps: true },
 )
 
+
 const BlogPostModel = model<IBlogPostDocument>("BlogPost", blogPostSchema)
 
 export { BlogPostModel, IBlogPostDocument }
