@@ -28,16 +28,15 @@ const blogPostSchema = new Schema(
     subtitle: { type: String, required: true },
     content: [
       {
-        subheading: { type: String },
-        subtitle: { type: String },
-        description: { type: String },
-        image: { type: String },
+        subheading: { id: { type: Number }, type: String },
+        subtitle: { id: { type: Number }, type: String },
+        description: { id: { type: Number }, type: String },
+        image: { id: { type: Number }, type: String },
         quote: {
+          id: { type: Number },
           content: { type: String },
           author: { type: String },
         },
-        ul: [{ type: String }],
-        ol: [{ type: String }],
       },
     ],
     category: {

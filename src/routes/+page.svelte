@@ -41,15 +41,16 @@
         .filter((el) => el !== undefined) as ParagraphContent[]
     }
   }
-  // let formData: BlogPost = {
-  //   title: "",
-  //   subtitle: "",
-  //   category: BlogCategory.Art,
-  //   author: recordAuthors[PersonName.DenaliBella],
-  //   content: [],
-  // }
 
-  let formData : BlogPost= {
+  let formReset: BlogPost = {
+    title: "",
+    subtitle: "",
+    category: BlogCategory.Art,
+    author: recordAuthors[PersonName.DenaliBella],
+    content: [],
+  }
+
+  let formData: BlogPost = {
     title: "The Ultimate Guide to Baking Cookies",
     subtitle:
       "Delicious recipes and tips for baking perfect cookies every time",
@@ -89,8 +90,8 @@
   }
 
   enum Component {
-    Json = "Json",
     Preview = "Preview",
+    Json = "Json",
   }
 
   let active: Component = Component.Preview
@@ -100,6 +101,23 @@
     }
     if (component === Component.Preview) {
       active = Component.Preview
+    }
+  }
+  async function submit(): Promise<void> {
+    try {
+      console.log("Trying to post: \n", formData)
+      await fetch("/api/blog-posts/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+    } catch (error) {
+      console.log((error as Error).message)
+    } finally {
+      formData = { ...formReset }
+      console.log("Submitted")
     }
   }
 </script>
@@ -112,55 +130,61 @@
           <button on:click={() => toggle(item)}>{item}</button>
         {/each}
       </div>
-      {#if active === Component.Json}
-        <div class="json">
-          <h1>JSON</h1>
-          <pre>{JSON.stringify(formData, null, 4)}</pre>
-        </div>
-      {:else if active === Component.Preview}
-        <div class="preview">
-          <h1>Preview</h1>
-             <div class="top">
-            <h2>{formData.title}</h2>
-            <h3>{formData.subtitle}</h3>
-            <div class="bottom">
-
-              <p><strong>Category</strong>: {formData.category}</p>
-              {#if formData.author}
-              <p><strong>By</strong> {formData.author.name}</p>
-              <p><strong>Description</strong> : {formData.author.description}</p>
+      <div class="components">
+        {#if active === Component.Json}
+          <div class="json">
+            <h1>JSON</h1>
+            <pre>{JSON.stringify(formData, null, 4)}</pre>
+          </div>
+        {:else if active === Component.Preview}
+          <div class="preview">
+            <h1>Preview</h1>
+            <div class="top">
+              <h2>{formData.title}</h2>
+              <h3>{formData.subtitle}</h3>
+              <div class="bottom">
+                <p><strong>Category</strong>: {formData.category}</p>
+                {#if formData.author}
+                  <p><strong>By</strong> {formData.author.name}</p>
+                  <p>
+                    <strong>Description</strong> : {formData.author.description}
+                  </p>
+                {/if}
+                <p><strong>{new Date().toLocaleDateString()}</strong></p>
+              </div>
+            </div>
+            <div class="content">
+              {#if formData.content}
+                {#each formData.content as item}
+                  <div>
+                    {#if item.subheading !== undefined}
+                      <h4>{item.subheading}</h4>
+                    {/if}
+                    {#if item.subtitle !== undefined}
+                      <h5>{item.subtitle}</h5>
+                    {/if}
+                    {#if item.description !== undefined}
+                      <p>{item.description}</p>
+                    {/if}
+                    {#if item.image !== undefined}
+                      <img src={item.image} alt="" />
+                    {/if}
+                    {#if item.quote !== undefined}
+                      <blockquote>
+                        <p>{item.quote.content}</p>
+                        <footer>{item.quote.author}</footer>
+                      </blockquote>
+                    {/if}
+                  </div>
+                {/each}
               {/if}
-              <p><strong>{new Date().toLocaleDateString()}</strong> </p>
             </div>
           </div>
-          <div class="content">
-            {#if formData.content}
-              {#each formData.content as item}
-                <div>
-                  {#if item.subheading !== undefined}
-                    <h4>{item.subheading}</h4>
-                  {/if}
-                  {#if item.subtitle !== undefined}
-                    <h5>{item.subtitle}</h5>
-                  {/if}
-                  {#if item.description !== undefined}
-                    <p>{item.description}</p>
-                  {/if}
-                  {#if item.image !== undefined}
-                    <img src={item.image} alt="" />
-                  {/if}
-                  {#if item.quote !== undefined}
-                    <blockquote>
-                      <p>{item.quote.content}</p>
-                      <footer>{item.quote.author}</footer>
-                    </blockquote>
-                  {/if}
-                </div>
-              {/each}
-            {/if}
-          </div>
+        {/if}
+        <div class="submit">
+          <button on:click={submit}>Submit</button>
         </div>
-      {/if}
+      </div>
     </div>
     <div class="page">
       <div class="data">
@@ -204,47 +228,59 @@
           <h3>Create your content here:</h3>
 
           {#if formData.content}
-            {#each formData.content as item, index}
-              <div class="content-item">
+            {#each formData.content as item, index (index)}
+              <div class="content-input">
                 {#if item.subheading !== undefined}
-                  <input
-                    type="text"
-                    bind:value={item.subheading}
-                    placeholder="Subheading"
-                    class="content-input"
-                  />
-                  <button on:click={() => removeContent(item.id)}>X</button
-                  >
+                  <div class="input">
+                    <input
+                      type="text"
+                      bind:value={item.subheading}
+                      placeholder="Subheading"
+                    />
+                    <button
+                      class="remove"
+                      on:click={() => removeContent(item.id)}>X</button
+                    >
+                  </div>
                 {/if}
                 {#if item.subtitle !== undefined}
-                  <input
-                    type="text"
-                    bind:value={item.subtitle}
-                    placeholder="Subtitle"
-                    class="content-input"
-                  />
-                  <button on:click={() => removeContent(item.id)}>X</button
-                  >
+                  <div class="input">
+                    <input
+                      type="text"
+                      bind:value={item.subtitle}
+                      placeholder="Subtitle"
+                    />
+                    <button
+                      class="remove"
+                      on:click={() => removeContent(item.id)}>X</button
+                    >
+                  </div>
                 {/if}
                 {#if item.description !== undefined}
-                  <textarea
-                    bind:value={item.description}
-                    placeholder="Description"
-                    class="content-textarea"
-                  ></textarea>
-                  <button on:click={() => removeContent(item.id)}>X</button
-                  >
+                  <div class="input">
+                    <textarea
+                      bind:value={item.description}
+                      placeholder="Description"
+                    ></textarea>
+                    <button
+                      class="remove"
+                      on:click={() => removeContent(item.id)}>X</button
+                    >
+                  </div>
                 {/if}
                 {#if item.image !== undefined}
-                  <input
-                    type="text"
-                    bind:value={item.image}
-                    placeholder="Image URL"
-                    class="content-input"
-                  />
-                  <img src={item.image} alt="" />
-                  <button on:click={() => removeContent(item.id)}>X</button
-                  >
+                  <div class="input">
+                    <input
+                      type="text"
+                      bind:value={item.image}
+                      placeholder="Image URL"
+                    />
+                    <img src={item.image} alt="" />
+                    <button
+                      class="remove"
+                      on:click={() => removeContent(item.id)}>X</button
+                    >
+                  </div>
                 {/if}
                 {#if item.quote !== undefined}
                   <div class="quote-container">
@@ -252,15 +288,14 @@
                       type="text"
                       bind:value={item.quote.author}
                       placeholder="Author"
-                      class="content-input"
                     />
                     <textarea
                       bind:value={item.quote.content}
                       placeholder="Quote"
-                      class="content-textarea"
                     ></textarea>
-                    <button on:click={() => removeContent(item.id)}
-                      >Remove</button
+                    <button
+                      class="remove"
+                      on:click={() => removeContent(item.id)}>Remove</button
                     >
                   </div>
                 {/if}
@@ -296,7 +331,7 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 5rem;
     padding: 5rem;
-    box-shadow: var(--bs-lg); ;
+    box-shadow: var(--bs-lg);
   }
 
   .page {
@@ -309,7 +344,6 @@
   .buttons {
     display: flex;
     gap: 1rem;
-    margin-top: 2rem;
   }
 
   .data .top {
@@ -318,47 +352,23 @@
     gap: 1rem;
   }
 
-  .content-item {
-    margin-bottom: 1rem;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  .content-input {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 0.5rem;
-    font-size: 1rem;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .content-textarea {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 0.5rem;
-    font-size: 1rem;
-    width: 100%;
-    box-sizing: border-box;
-    min-height: 100px;
-  }
-
-  .quote-container {
-    display: flex;
-    gap: 1rem;
-  }
-
-  input {
-    font-size: 30px;
+  input,
+  textarea {
+    font-size: 17px;
     padding: 1rem 2rem;
     width: 100%;
     word-break: break-all;
   }
 
+  textarea {
+    min-height: 200px;
+    max-width: 600px;
+  }
+
   pre {
-    font-size: 15px;
+    font-size: 13px;
     white-space: pre-wrap; /* Add this line */
+    margin: 2rem 0;
   }
 
   img {
@@ -398,6 +408,13 @@
     flex-direction: column;
     padding: 2rem 0;
   }
+
+  .preview {
+    box-shadow: var(--bs-sm);
+    padding: 3rem 2rem;
+    margin: 1rem 0;
+  }
+
   .preview .top {
     gap: 1.2rem;
   }
@@ -413,9 +430,37 @@
     text-align: center;
   }
 
-  button {
-    border-radius: 50%;
-    margin: .5rem 0;
-    
+  .submit {
+    display: flex;
+    justify-content: center;
+  }
+
+  .input {
+    position: relative;
+    border: 3px solid transparent;
+    border-radius: 5px;
+    transition: var(--med);
+  }
+  .input .remove {
+    position: absolute;
+    right: -10%; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    opacity: 0;
+    transition: var(--med);
+  }
+  .input:hover .remove {
+    opacity: 1;
+  }
+
+  .input:hover {
+    border: 3px solid var(--a-50);
+  }
+
+  .content-input {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 1rem;
   }
 </style>
