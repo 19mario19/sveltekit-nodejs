@@ -79,10 +79,17 @@
       },
       {
         id: 6,
-        subtitle: "Decorating and Serving Ideas",
+        quote: {
+          author: "John Doe",
+          content: "I couldn't live without these cookies!",
+        },
       },
       {
         id: 7,
+        subtitle: "Decorating and Serving Ideas",
+      },
+      {
+        id: 8,
         description:
           "Once your cookies are baked to perfection, it's time to get creative with decorating and serving. Whether you prefer classic cookies with a glass of milk or elaborate cookie platters for special occasions, we'll provide inspiration and tips for making your cookies look as good as they taste.",
       },
@@ -164,7 +171,7 @@
                       <h5>{item.subtitle}</h5>
                     {/if}
                     {#if item.description !== undefined}
-                      <p>{item.description}</p>
+                      <p class="description">{item.description}</p>
                     {/if}
                     {#if item.image !== undefined}
                       <img src={item.image} alt="" />
@@ -283,7 +290,7 @@
                   </div>
                 {/if}
                 {#if item.quote !== undefined}
-                  <div class="quote-container">
+                  <div class="input">
                     <input
                       type="text"
                       bind:value={item.quote.author}
@@ -295,7 +302,7 @@
                     ></textarea>
                     <button
                       class="remove"
-                      on:click={() => removeContent(item.id)}>Remove</button
+                      on:click={() => removeContent(item.id)}>X</button
                     >
                   </div>
                 {/if}
@@ -338,7 +345,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+
+    width: 100%;
   }
 
   .buttons {
@@ -443,14 +451,20 @@
   }
   .input .remove {
     position: absolute;
-    right: -10%; 
-    top: 50%; 
-    transform: translateY(-50%); 
+    right: -10%;
+    top: 50%;
+    transform: translateY(-50%) translateX(-100%);
     opacity: 0;
     transition: var(--med);
+
+    z-index: -1;
+
+    border-radius: 50%;
+    box-shadow: var(--bs-sm);
   }
   .input:hover .remove {
     opacity: 1;
+      transform: translateY(-50%) translateX(0);
   }
 
   .input:hover {
@@ -462,5 +476,20 @@
     flex-direction: column;
 
     margin-bottom: 1rem;
+  }
+
+  blockquote p,
+  blockquote footer {
+    font-style: italic;
+    text-align: right;
+    font-size: var(--fs-sm-xl);
+  }
+  blockquote footer {
+    font-weight: bold;
+  }
+
+  blockquote p::after,
+  blockquote p::before {
+    content: '"';
   }
 </style>
