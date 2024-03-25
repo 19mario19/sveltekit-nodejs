@@ -33,8 +33,6 @@ type ParagraphContent = {
   description?: string
   image?: string
   quote?: Quote
-  ul?: string[]
-  ol?: string[]
 }
 
 enum ContentTypes {
@@ -46,6 +44,7 @@ enum ContentTypes {
 }
 
 type BlogPost = {
+  mainImage?: string
   title?: string
   subtitle?: string
   content?: ParagraphContent[]

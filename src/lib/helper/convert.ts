@@ -9,8 +9,9 @@ import type { ParagraphContent, ID } from "$lib/types"
  */
 function convertContentToParagrphContent(
   element: ContentTypes,
-  id: ID,
 ): ParagraphContent {
+  const id = crypto.randomUUID()
+
   switch (element) {
     case ContentTypes.Subheading:
       return { id, subheading: "" }
@@ -30,7 +31,7 @@ function convertContentToParagrphContent(
       }
 
     default:
-      return {id: 0}
+      return { id: 0 }
   }
 }
 
