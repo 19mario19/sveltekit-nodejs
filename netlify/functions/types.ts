@@ -1,6 +1,12 @@
+type ID = string | number
 
 enum PersonName {
   DenaliBella = "Denali Bella",
+  JohnSmith = "John Smith",
+  MaryJohnson = "Mary Johnson",
+  DavidBrown = "David Brown",
+  SarahWilson = "Sarah Wilson",
+  MichaelMiller = "Michael Miller",
 }
 
 type Author = {
@@ -21,26 +27,36 @@ type Quote = {
 }
 
 type ParagraphContent = {
+  id: ID
   subheading?: string
   subtitle?: string
   description?: string
   image?: string
   quote?: Quote
-  ul?: string[]
-  ol?: string[]
+}
+
+enum ContentTypes {
+  Subheading = "subheading",
+  Subtitle = "subtitle",
+  Description = "description",
+  Image = "image",
+  Quote = "quote",
 }
 
 type BlogPost = {
-  title: string
-  subtitle: string
-  content: ParagraphContent[]
-  category: BlogCategory
-  author: Author
+  mainImage?: string
+  title?: string
+  subtitle?: string
+  content?: ParagraphContent[]
+  category?: BlogCategory
+  author?: Author
   createdAt?: string
 }
 
+enum ApiRoutes {
+  BlogPosts = "/api/blog-posts/",
+}
 
+export { PersonName, BlogCategory, ApiRoutes, ContentTypes }
 
-export { PersonName, BlogCategory }
-
-export type {  Author, ParagraphContent, BlogPost }
+export type { ID, Author, ParagraphContent, BlogPost, Quote }

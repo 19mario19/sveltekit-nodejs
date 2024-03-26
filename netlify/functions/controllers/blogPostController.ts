@@ -26,11 +26,12 @@ async function getBlogPost(req: Request, res: Response) {
 
 async function createBlogPost(req: Request, res: Response) {
   try {
-    const { title, subtitle, content, category, author }: BlogPost = req.body
+    const { title, subtitle,mainImage ,content, category, author }: BlogPost = req.body
 
     const newBlogPost = await BlogPostModel.create({
       title,
       subtitle,
+      mainImage,
       content,
       category,
       author,

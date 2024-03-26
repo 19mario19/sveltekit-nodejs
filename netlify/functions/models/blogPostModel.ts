@@ -4,6 +4,7 @@ import { BlogCategory, Author, PersonName } from "../types"
 interface IBlogPostDocument extends Document {
   title: string
   subtitle: string
+  mainImage?: string
   content: {
     subheading?: string
     subtitle?: string
@@ -13,8 +14,6 @@ interface IBlogPostDocument extends Document {
       content: string
       author: string
     }
-    ul?: string[]
-    ol?: string[]
   }[]
   category: BlogCategory
   author: Author
@@ -26,6 +25,7 @@ const blogPostSchema = new Schema(
   {
     title: { type: String, required: true },
     subtitle: { type: String, required: true },
+    mainImage: { type: String , required: true },
     content: [
       {
         subheading: { id: { type: Number }, type: String },

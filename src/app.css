@@ -211,7 +211,16 @@ textarea {
     height: 150px;
     border-radius: 4px;
     font-size: 16px;
+
     resize: none;
+    border: none;
+    overflow: auto;
+    outline: none;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
 }
 
 /* List styles */

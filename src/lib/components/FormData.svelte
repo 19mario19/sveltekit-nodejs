@@ -1,83 +1,176 @@
 <script lang="ts">
+  import { recordAuthors } from "$lib/authorsDb"
   import { formDataInstance, formData } from "$lib/formData/formData"
-  import type { BlogPost } from "$lib/types"
-  import { ContentTypes } from "$lib/types"
-  import { blur } from "svelte/transition"
+  import type { BlogPost, ParagraphContent } from "$lib/types"
+  import { ContentTypes, BlogCategory, PersonName } from "$lib/types"
+  import { blur, slide } from "svelte/transition"
 
-  //   let form: BlogPost = {
-  //     title: "",
-  //     subtitle: "",
-  //     content: [] as ParagraphContent[],
-  //   }
+  // let form: BlogPost = {
+  //   title: "",
+  //   subtitle: "",
+  //   mainImage: "",
+  //   content: [] as ParagraphContent[],
+  //   category: BlogCategory.Art,
+  //   author: recordAuthors[PersonName.DenaliBella],
+  // }
 
+  // Initializes the form with default values
   let form: BlogPost = {
-    title: "The Ultimate Guide to Baking Cookies",
+    title:
+      "Unleash Your Inner Supermodel: A Comprehensive Guide to Modeling for Women",
     subtitle:
-      "Delicious recipes and tips for baking perfect cookies every time",
+      "Discover the secrets to a successful and empowering modeling career",
     mainImage:
       "https://c.wallhere.com/images/c0/0c/c6b6be8b11a80e8800d7d429c79e-1223471.jpg!d",
+    category: BlogCategory.Art,
+    author: recordAuthors[PersonName.DavidBrown],
     content: [
       {
         id: 1,
-        subheading: "Introduction to Baking Cookies",
+        subheading: "Introduction to the Captivating World of Modeling",
       },
       {
         id: 2,
         description:
-          "Classic Chocolate Chip Cookies - One of the most beloved cookie recipes is the classic chocolate chip cookie. With its perfect balance of sweet and savory flavors, it's sure to please any palate. Try our recipe for soft and chewy chocolate chip cookies that are sure to become a family favorite.",
+          "Modeling is a dynamic and multifaceted industry that celebrates the beauty, grace, and individuality of women. From the glitz and glamour of high-fashion runways to the artistry of editorial shoots, modeling offers a platform for self-expression and empowerment. In this comprehensive guide, we'll explore the many facets of this exciting profession and provide you with the tools and insights you need to embark on a successful and fulfilling modeling journey.",
       },
       {
         id: 3,
         image:
-          "https://c.wallhere.com/images/1e/94/07153b8def3a698615d5572e8099-1494609.jpg!d",
+          "https://c.wallhere.com/images/3a/0b/9e779828e0e8bb52eabdeefd4297-1479345.jpg!d",
       },
       {
         id: 4,
-        subtitle: "Tips for Perfect Cookies",
+        subtitle: "Cultivating Confidence and Self-Love",
       },
       {
         id: 5,
         description:
-          "Achieving the perfect cookie requires attention to detail and a few handy tips. From properly measuring ingredients to ensuring the oven is at the correct temperature, we'll cover everything you need to know to bake cookies like a pro.",
+          "Confidence is the cornerstone of a successful modeling career. It's not just about physical attributes; it's about embracing your unique beauty and radiating self-assurance from within. In this section, we'll delve into strategies for building self-confidence, overcoming insecurities, and developing a positive body image that will shine through in every shot and catwalk appearance.",
       },
       {
         id: 6,
         quote: {
-          author: "John Doe",
-          content: "I couldn't live without these cookies!",
+          author: "Tyra Banks",
+          content:
+            "Embrace your individuality and celebrate your uniqueness. That's what modeling is all about.",
         },
       },
       {
         id: 7,
-        subtitle: "Decorating and Serving Ideas",
+        subtitle: "Mastering the Art of Posing and Movement",
       },
       {
         id: 8,
         description:
-          "Once your cookies are baked to perfection, it's time to get creative with decorating and serving. Whether you prefer classic cookies with a glass of milk or elaborate cookie platters for special occasions, we'll provide inspiration and tips for making your cookies look as good as they taste.",
+          "Whether you're posing for a high-fashion editorial or commanding the runway, understanding the art of posing and movement is crucial. We'll explore techniques for achieving flattering angles, conveying emotion through body language, and captivating your audience with grace and poise. From mastering the classic poses to experimenting with avant-garde styles, you'll learn to showcase your best assets and bring your unique personality to life.",
+      },
+      {
+        id: 9,
+        image:
+          "https://c.wallhere.com/images/c6/06/ddabbba09d0cd79ce87c2a30dcae-1479355.jpg!d",
+      },
+      {
+        id: 10,
+        subtitle: "Building a Successful Modeling Portfolio",
+      },
+      {
+        id: 11,
+        description:
+          "Your modeling portfolio is your calling card, a visual representation of your talents and versatility. In this section, we'll guide you through the process of curating a compelling portfolio that showcases your best work and attracts the attention of agencies and clients. From selecting stunning photographs to crafting a cohesive narrative, we'll cover the essential elements of a standout modeling portfolio.",
+      },
+      {
+        id: 12,
+        subtitle: "Navigating the Modeling Industry",
+      },
+      {
+        id: 13,
+        description:
+          "The modeling industry is a dynamic and ever-evolving landscape, filled with opportunities and challenges. We'll provide insights into the various sectors of the industry, from commercial modeling to high-fashion editorials, and offer practical advice on finding reputable agencies, negotiating contracts, and maintaining a healthy work-life balance. Additionally, we'll discuss the importance of professionalism, networking, and continuous learning to stay ahead in this competitive field.",
+      },
+      {
+        id: 14,
+        quote: {
+          author: "Cara Delevingne",
+          content:
+            "Modeling is not just about looking pretty; it's about being yourself and embracing your individuality.",
+        },
+      },
+      {
+        id: 15,
+        subtitle: "Embracing Diversity and Inclusivity",
+      },
+      {
+        id: 16,
+        description:
+          "In recent years, the modeling industry has undergone a significant transformation, celebrating diversity and inclusivity like never before. In this section, we'll explore the importance of representation and how models of all backgrounds, sizes, and abilities are redefining beauty standards and inspiring confidence in women worldwide. We'll also discuss the role of ethical practices and body positivity in shaping a more inclusive and empowering modeling landscape.",
       },
     ],
   }
 
   const data = formDataInstance(form)
 
-  async function submit() {
-    const res = await fetch("/api/blog-posts/", {
-      method: "POST",
-      body: JSON.stringify(form),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (res.ok) {
-      formData.set({ content: [] });
-      alert("Blog post created");
+  enum ResponseType {
+    Success = "success",
+    Error = "error",
+    Initiated = "initiated",
+  }
+
+  let errors = { title: "", subtitle: "", mainImage: "" }
+
+  async function submit(e: Event) {
+    e.preventDefault()
+
+    // Form validation
+    if (!$formData.title) {
+      errors.title = "Please enter a title"
+    } else {
+      errors.title = ""
+    }
+    if (!$formData.subtitle) {
+      errors.subtitle = "Please enter a subtitle"
+    } else {
+      errors.subtitle = ""
+    }
+    if (!$formData.mainImage) {
+      errors.mainImage = "Please enter a main image"
+    } else {
+      errors.mainImage = ""
+    }
+
+    if (errors.title || errors.subtitle || errors.mainImage) {
+      return
+    }
+
+    let response: ResponseType = ResponseType.Initiated
+    try {
+      const res = await fetch("/api/blog-posts/", {
+        method: "POST",
+        body: JSON.stringify($formData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      if (res.ok) {
+        response = ResponseType.Success
+        data.clear()
+        alert("Blog post created")
+      } else {
+        response = ResponseType.Error
+        alert("Failed to create blog post. Please try again.")
+      }
+    } catch (error) {
+      response = ResponseType.Error
+      console.log((error as Error).message)
+      alert("An error occurred. Please try again.")
+    } finally {
+      console.log(`Response: ${response}`)
     }
   }
 
-  $: form = $formData
+  $: $formData = form
 
-  console.log(form)
+  $: console.log(errors)
 </script>
 
 <div class="formData">
@@ -86,43 +179,65 @@
       <strong>Here</strong> is the place where <strong>you</strong> can
       <strong>create</strong> :
     </h1>
-    <form action="">
+    <form>
       <div class="top">
-        <input
-          type="text"
+        {#if errors.title}
+          <p class="error">{errors.title}</p>
+        {/if}
+        <textarea
           class="title"
-          placeholder="Your title"
-          bind:value={form.title}
+          class:error={errors.title}
+          placeholder={errors.title
+            ? "You forgot to enter a title"
+            : "Your title"}
+          bind:value={$formData.title}
         />
+        {#if errors.subtitle}
+          <p class="error">{errors.subtitle}</p>
+        {/if}
         <input
           type="text"
           class="subtitle"
-          placeholder="Your subtitle"
-          bind:value={form.subtitle}
+          class:error={errors.subtitle}
+          placeholder={errors.title
+            ? "You forgot to enter a subtitle"
+            : "Your subtitle"}
+          bind:value={$formData.subtitle}
         />
-        {#if $formData.mainImage}
-          <div class="main-image">
-            <div class="input-data">
+
+        <div class="main-image">
+          {#if errors.mainImage}
+            <p class="error">{errors.mainImage}</p>
+          {/if}
+          <div class="input-data">
+            {#if $formData.mainImage}
               <img src={$formData.mainImage} alt="" />
-              <input
-                type="text"
-                class="image"
-                bind:value={$formData.mainImage}
-              />
-              <button
-                class="remove"
-                on:click={() => ($formData.mainImage = undefined)}
-                >Remove</button
-              >
-            </div>
+            {/if}
+            <input
+              type="text"
+              class="image"
+              class:error={errors.mainImage}
+              placeholder={errors.title
+                ? "You forgot to enter the URL of your image"
+                : "Your Main Image"}
+              bind:value={$formData.mainImage}
+            />
+            <button class="remove" on:click={() => ($formData.mainImage = "")}
+              >Remove</button
+            >
           </div>
-        {/if}
+        </div>
       </div>
 
       {#if $formData.content}
         <div class:isEmpty={!$formData.content[0]} class="form-container">
           {#each $formData.content as item (item.id)}
-            <div class="input-data" transition:blur={{ duration: 500 }}>
+            <div
+              class="input-data"
+              transition:slide={{
+                duration: 300,
+              }}
+            >
               {#if item.description !== undefined}
                 <textarea
                   class="description"
@@ -159,7 +274,9 @@
                 >
               {/if}
               {#if item.image !== undefined}
-                <img src={item.image} alt="" />
+                {#if item.image}
+                  <img src={item.image} alt="" />
+                {/if}
                 <input
                   type="text"
                   class="image"
@@ -175,7 +292,7 @@
               {#if item.quote !== undefined}
                 <blockquote>
                   <div class="content">
-                    <input
+                    <textarea
                       class="quote content"
                       placeholder="Your quote"
                       bind:value={item.quote.content}
@@ -312,7 +429,7 @@
     text-align: center;
   }
 
-  input.title {
+  textarea.title {
     font-size: var(--fs-xl);
     font-weight: bold;
   }
@@ -329,7 +446,7 @@
   input,
   textarea {
     width: 100%;
-    border: 2px solid transparent;
+    border: 2px solid var(--l-50);
     border-radius: 15px;
   }
 
@@ -338,7 +455,8 @@
     border: 2px solid var(--a-50);
   }
 
-  blockquote input {
+  blockquote input,
+  blockquote textarea {
     text-align: right;
   }
   blockquote footer input {
@@ -355,8 +473,7 @@
     font-size: var(--fs-sm);
     line-height: 22px;
   }
-  .remove {
-  }
+
   .subheading {
     font-size: var(--fs-lg);
     line-height: 30px;
@@ -366,27 +483,7 @@
     line-height: 30px;
   }
 
-  h1 {
-    font-size: var(--fs-xl);
-    line-height: 40px;
-  }
-
-  h2 {
-    font-size: var(--fs-lg);
-    line-height: 30px;
-  }
-
-  h3 {
-    font-size: var(--fs-base);
-    line-height: 30px;
-  }
-
-  h4 {
-    font-size: var(--fs-sm-xl);
-    line-height: 26px;
-  }
-  h5 {
-    font-size: var(--fs-sm-s);
-    line-height: 24px;
+  input.error {
+    background-color: var(--a-35) !important;
   }
 </style>

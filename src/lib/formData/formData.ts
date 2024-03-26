@@ -1,12 +1,18 @@
 import { writable } from "svelte/store"
 import type { Writable } from "svelte/store"
-import { ContentTypes } from "$lib/types"
+import { BlogCategory, ContentTypes, PersonName } from "$lib/types"
 import type { BlogPost, ParagraphContent, ID } from "$lib/types"
 import { convertContentToParagrphContent } from "$lib/helper/convert"
+import { recordAuthors } from "$lib/authorsDb"
 
-const formData: Writable<BlogPost> = writable({ content: [] })
+const formData: Writable<BlogPost> = writable({
+  title: "",
+  subtitle: "",
+  mainImage: "",
+  content: [],
+})
 
-// formData.subscribe((v) => console.log("FormData: ", v))
+formData.subscribe((v) => console.log("FormData: ", v))
 
 interface IFormData {
   set: (data: BlogPost) => void
@@ -27,7 +33,14 @@ class FormData implements IFormData {
     if (!confirm("Are you sure you want to clear all?")) {
       return
     }
-    formData.set({ content: [] })
+    formData.set({
+      title: "",
+      subtitle: "",
+      mainImage: "",
+      content: [],
+      category: BlogCategory.Art,
+      author: recordAuthors[PersonName.DenaliBella],
+    })
   }
   /**
    * Adds a paragraph to the form data.
