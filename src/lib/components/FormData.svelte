@@ -3,7 +3,10 @@
   import { formDataInstance, formData } from "$lib/formData/formData"
   import type { BlogPost, ParagraphContent } from "$lib/types"
   import { ContentTypes, BlogCategory, PersonName } from "$lib/types"
-  import { blur, slide } from "svelte/transition"
+  import { blur, slide, fade } from "svelte/transition"
+  import { goto, invalidateAll } from "$app/navigation"
+  import Container from "$lib/components/shared/Container.svelte"
+  import { ContainerDimension } from "$lib/types"
 
   // let form: BlogPost = {
   //   title: "",
@@ -21,9 +24,9 @@
     subtitle:
       "Discover the secrets to a successful and empowering modeling career",
     mainImage:
-      "https://c.wallhere.com/images/c0/0c/c6b6be8b11a80e8800d7d429c79e-1223471.jpg!d",
+      "https://c.wallhere.com/images/d0/d0/3c9203dca6873e85879197389228-1520111.jpg!d",
     category: BlogCategory.Art,
-    author: recordAuthors[PersonName.DavidBrown],
+    author: recordAuthors[PersonName.MichaelMiller],
     content: [
       {
         id: 1,
@@ -37,7 +40,7 @@
       {
         id: 3,
         image:
-          "https://c.wallhere.com/images/3a/0b/9e779828e0e8bb52eabdeefd4297-1479345.jpg!d",
+          "https://c.wallhere.com/images/52/8c/3bd7c22b3a5abe40f7debd9f372d-1520109.jpg!d",
       },
       {
         id: 4,
@@ -68,7 +71,7 @@
       {
         id: 9,
         image:
-          "https://c.wallhere.com/images/c6/06/ddabbba09d0cd79ce87c2a30dcae-1479355.jpg!d",
+          "https://c.wallhere.com/photos/76/94/county_blue_light_sunset_summer_sky_sun_abstract-771233.jpg!d",
       },
       {
         id: 10,
@@ -118,32 +121,35 @@
 
   let errors = { title: "", subtitle: "", mainImage: "" }
 
+  let response: ResponseType = ResponseType.Initiated
+
   async function submit(e: Event) {
-    e.preventDefault()
+    // e.preventDefault()
 
     // Form validation
-    if (!$formData.title) {
+    if (!$formData.title?.trim()) {
       errors.title = "Please enter a title"
     } else {
       errors.title = ""
     }
-    if (!$formData.subtitle) {
+    if (!$formData.subtitle?.trim()) {
       errors.subtitle = "Please enter a subtitle"
     } else {
       errors.subtitle = ""
     }
-    if (!$formData.mainImage) {
+    if (!$formData.mainImage?.trim()) {
       errors.mainImage = "Please enter a main image"
     } else {
       errors.mainImage = ""
     }
 
     if (errors.title || errors.subtitle || errors.mainImage) {
+      response = ResponseType.Error
       return
     }
 
-    let response: ResponseType = ResponseType.Initiated
     try {
+      response = ResponseType.Initiated
       const res = await fetch("/api/blog-posts/", {
         method: "POST",
         body: JSON.stringify($formData),
@@ -154,190 +160,209 @@
       if (res.ok) {
         response = ResponseType.Success
         data.clear()
-        alert("Blog post created")
+        invalidateAll()
+        // alert("Blog post created")
       } else {
         response = ResponseType.Error
-        alert("Failed to create blog post. Please try again.")
+        // alert("Failed to create blog post. Please try again.")
       }
     } catch (error) {
       response = ResponseType.Error
       console.log((error as Error).message)
-      alert("An error occurred. Please try again.")
+      // alert("An error occurred. Please try again.")
     } finally {
       console.log(`Response: ${response}`)
     }
   }
+  $: if (response === ResponseType.Success) {
+    setTimeout(() => {
+      goto("/posts")
+    }, 500)
+  }
+  $: console.log(response)
 
   $: $formData = form
-
-  $: console.log(errors)
 </script>
 
-<div class="formData">
-  <main>
-    <h1>
-      <strong>Here</strong> is the place where <strong>you</strong> can
-      <strong>create</strong> :
-    </h1>
-    <form>
-      <div class="top">
-        {#if errors.title}
-          <p class="error">{errors.title}</p>
-        {/if}
-        <textarea
-          class="title"
-          class:error={errors.title}
-          placeholder={errors.title
-            ? "You forgot to enter a title"
-            : "Your title"}
-          bind:value={$formData.title}
-        />
-        {#if errors.subtitle}
-          <p class="error">{errors.subtitle}</p>
-        {/if}
-        <input
-          type="text"
-          class="subtitle"
-          class:error={errors.subtitle}
-          placeholder={errors.title
-            ? "You forgot to enter a subtitle"
-            : "Your subtitle"}
-          bind:value={$formData.subtitle}
-        />
-
-        <div class="main-image">
-          {#if errors.mainImage}
-            <p class="error">{errors.mainImage}</p>
+<Container dimentions={ContainerDimension.Medium}>
+  <div class="formData">
+    <main>
+      <h1>
+        <strong>Here</strong> is the place where <strong>you</strong> can
+        <strong>create</strong> :
+      </h1>
+      <form>
+        <div class="top">
+          <div class="category">
+            <select bind:value={$formData.category}>
+              {#each Array.from(Object.values(BlogCategory)) as category}
+                <option value={category}>{category}</option>
+              {/each}
+            </select>
+          </div>
+          {#if errors.title}
+            <p class="error">{errors.title}</p>
           {/if}
-          <div class="input-data">
-            {#if $formData.mainImage}
-              <img src={$formData.mainImage} alt="" />
+          <textarea
+            class="title"
+            class:error={errors.title}
+            placeholder={errors.title
+              ? "You forgot to enter a title"
+              : "Your title"}
+            bind:value={$formData.title}
+          />
+          {#if errors.subtitle}
+            <p class="error">{errors.subtitle}</p>
+          {/if}
+          <input
+            type="text"
+            class="subtitle"
+            class:error={errors.subtitle}
+            placeholder={errors.title
+              ? "You forgot to enter a subtitle"
+              : "Your subtitle"}
+            bind:value={$formData.subtitle}
+          />
+
+          <div class="main-image">
+            {#if errors.mainImage}
+              <p transition:fade class="error">{errors.mainImage}</p>
             {/if}
-            <input
-              type="text"
-              class="image"
-              class:error={errors.mainImage}
-              placeholder={errors.title
-                ? "You forgot to enter the URL of your image"
-                : "Your Main Image"}
-              bind:value={$formData.mainImage}
-            />
-            <button class="remove" on:click={() => ($formData.mainImage = "")}
-              >Remove</button
-            >
+            <div class="input-data">
+              {#if $formData.mainImage}
+                <img src={$formData.mainImage} alt="" />
+              {/if}
+              <input
+                type="text"
+                class="image"
+                class:error={errors.mainImage}
+                placeholder={errors.title
+                  ? "You forgot to enter the URL of your image"
+                  : "Your Main Image"}
+                bind:value={$formData.mainImage}
+              />
+              <button class="remove" on:click={() => ($formData.mainImage = "")}
+                >Clear</button
+              >
+            </div>
           </div>
         </div>
-      </div>
 
-      {#if $formData.content}
-        <div class:isEmpty={!$formData.content[0]} class="form-container">
-          {#each $formData.content as item (item.id)}
-            <div
-              class="input-data"
-              transition:slide={{
-                duration: 300,
-              }}
-            >
-              {#if item.description !== undefined}
-                <textarea
-                  class="description"
-                  placeholder="Your description"
-                  bind:value={item.description}
-                />
-                <button
-                  class="remove"
-                  on:click={() => data.removeParagraph(item.id)}>Remove</button
-                >
-              {/if}
-              {#if item.subheading !== undefined}
-                <input
-                  type="text"
-                  class="subheading"
-                  placeholder="Your subheading"
-                  bind:value={item.subheading}
-                />
-                <button
-                  class="remove"
-                  on:click={() => data.removeParagraph(item.id)}>Remove</button
-                >
-              {/if}
-              {#if item.subtitle !== undefined}
-                <input
-                  type="text"
-                  class="subtitle-content"
-                  placeholder="Your subtitle"
-                  bind:value={item.subtitle}
-                />
-                <button
-                  class="remove"
-                  on:click={() => data.removeParagraph(item.id)}>Remove</button
-                >
-              {/if}
-              {#if item.image !== undefined}
-                {#if item.image}
-                  <img src={item.image} alt="" />
+        {#if $formData.content}
+          <div class:isEmpty={!$formData.content[0]} class="form-container">
+            {#each $formData.content as item (item.id)}
+              <div
+                class="input-data"
+                transition:slide={{
+                  duration: 300,
+                }}
+              >
+                {#if item.description !== undefined}
+                  <textarea
+                    class="description"
+                    placeholder="Your description"
+                    bind:value={item.description}
+                  />
+                  <button
+                    class="remove"
+                    on:click|preventDefault={() =>
+                      data.removeParagraph(item.id)}>Remove</button
+                  >
                 {/if}
-                <input
-                  type="text"
-                  class="image"
-                  placeholder="Your image URL"
-                  bind:value={item.image}
-                />
+                {#if item.subheading !== undefined}
+                  <input
+                    type="text"
+                    class="subheading"
+                    placeholder="Your subheading"
+                    bind:value={item.subheading}
+                  />
+                  <button
+                    class="remove"
+                    on:click|preventDefault={() =>
+                      data.removeParagraph(item.id)}>Remove</button
+                  >
+                {/if}
+                {#if item.subtitle !== undefined}
+                  <input
+                    type="text"
+                    class="subtitle-content"
+                    placeholder="Your subtitle"
+                    bind:value={item.subtitle}
+                  />
+                  <button
+                    class="remove"
+                    on:click|preventDefault={() =>
+                      data.removeParagraph(item.id)}>Remove</button
+                  >
+                {/if}
+                {#if item.image !== undefined}
+                  {#if item.image}
+                    <img src={item.image} alt="" />
+                  {/if}
+                  <input
+                    type="text"
+                    class="image"
+                    placeholder="Your image URL"
+                    bind:value={item.image}
+                  />
 
-                <button
-                  class="remove"
-                  on:click={() => data.removeParagraph(item.id)}>Remove</button
-                >
-              {/if}
-              {#if item.quote !== undefined}
-                <blockquote>
-                  <div class="content">
-                    <textarea
-                      class="quote content"
-                      placeholder="Your quote"
-                      bind:value={item.quote.content}
-                    />
-                  </div>
-                  <footer>
-                    <input
-                      class="quote author"
-                      placeholder="Your author"
-                      bind:value={item.quote.author}
-                    />
-                  </footer>
-                </blockquote>
-                <button
-                  class="remove"
-                  on:click={() => data.removeParagraph(item.id)}>Remove</button
-                >
-              {/if}
-            </div>
+                  <button
+                    class="remove"
+                    on:click|preventDefault={() =>
+                      data.removeParagraph(item.id)}>Remove</button
+                  >
+                {/if}
+                {#if item.quote !== undefined}
+                  <blockquote>
+                    <div class="content">
+                      <textarea
+                        class="quote content"
+                        placeholder="Your quote"
+                        bind:value={item.quote.content}
+                      />
+                    </div>
+                    <footer>
+                      <input
+                        class="quote author"
+                        placeholder="Your author"
+                        bind:value={item.quote.author}
+                      />
+                    </footer>
+                  </blockquote>
+                  <button
+                    class="remove"
+                    on:click|preventDefault={() =>
+                      data.removeParagraph(item.id)}>Remove</button
+                  >
+                {/if}
+              </div>
+            {/each}
+          </div>
+        {/if}
+        <div class="buttons">
+          {#each Array.from(Object.values(ContentTypes)) as item}
+            <button on:click|preventDefault={() => data.addParagraph(item)}
+              >Add {item.charAt(0).toUpperCase() + item.slice(1)}</button
+            >
           {/each}
+          {#if $formData.content?.[0]}
+            <button class="clear" on:click={() => data.clear()}
+              >Clear all</button
+            >
+          {/if}
         </div>
-      {/if}
-    </form>
-    <div class="buttons">
-      {#each Array.from(Object.values(ContentTypes)) as item}
-        <button on:click={() => data.addParagraph(item)}
-          >Add {item.charAt(0).toUpperCase() + item.slice(1)}</button
-        >
-      {/each}
-      {#if $formData.content?.[0]}
-        <button class="clear" on:click={() => data.clear()}>Clear all</button>
-      {/if}
-    </div>
-  </main>
-  <button on:click={submit}>Submit</button>
-</div>
+        <button class="submit" on:click={submit}>Submit</button>
+      </form>
+    </main>
+  </div>
+</Container>
 
 <style>
   .formData {
     display: grid;
     grid-template-columns: 1fr;
-    max-width: 960px;
     align-items: center;
     justify-content: center;
-    margin: 0 auto;
     gap: 2rem;
 
     padding: 2rem;
@@ -347,10 +372,6 @@
       flex-direction: column;
       gap: 1rem;
       margin-bottom: 2rem;
-    }
-
-    & > * {
-      padding: 2rem;
     }
 
     & main,
@@ -374,6 +395,20 @@
       margin-bottom: 2rem;
     }
   }
+
+  .category  {
+    display: flex;
+    margin: 0 auto;
+
+    & select {
+      padding: 0.5rem;
+      border-radius: 15px;
+      margin: 0 auto;
+    }
+
+    
+  }
+
   .buttons {
     margin: 2rem 0;
     display: flex;
@@ -389,6 +424,16 @@
     border: 1px solid var(--l-50);
     position: relative;
     border-radius: 15px;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    padding: 0.5rem;
+    gap: 0.5rem;
+    transition: var(--med);
+  }
+
+  .input-data:hover {
+    background-color: var(--l-10);
   }
 
   .input-data input.image {
@@ -403,7 +448,6 @@
     top: 50%;
     transform: translateY(-50%);
     opacity: 0;
-    transition: var(--med);
     box-shadow: var(--bs-sm);
   }
 
@@ -417,7 +461,7 @@
     width: 100%;
     height: 400px;
     object-fit: cover;
-    border-radius: 2px;
+    border-radius: 15px;
   }
 
   .main-image img {
@@ -448,6 +492,7 @@
     width: 100%;
     border: 2px solid var(--l-50);
     border-radius: 15px;
+    background-color: white;
   }
 
   input:hover,
@@ -459,6 +504,11 @@
   blockquote textarea {
     text-align: right;
   }
+
+  blockquote textarea {
+    font-size: var(--fs-base);
+  }
+
   blockquote footer input {
     font-weight: bold;
   }
@@ -483,7 +533,29 @@
     line-height: 30px;
   }
 
-  input.error {
+  button.submit {
+    width: 100%;
+    padding: 2rem;
+  }
+
+  input:active,
+  input:focus,
+  textarea:active,
+  textarea:focus {
+    border: 2px solid var(--p-50);
+  }
+
+  p.error {
+    text-align: center;
+    background-color: var(--l-35);
+    width: fit-content;
+    margin: 0 auto;
+    padding: 0.5rem;
+    border-radius: 5px;
+  }
+
+  input.error,
+  textarea.error {
     background-color: var(--a-35) !important;
   }
 </style>

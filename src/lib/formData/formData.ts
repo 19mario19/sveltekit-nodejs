@@ -12,7 +12,7 @@ const formData: Writable<BlogPost> = writable({
   content: [],
 })
 
-formData.subscribe((v) => console.log("FormData: ", v))
+// formData.subscribe((v) => console.log("FormData: ", v))
 
 interface IFormData {
   set: (data: BlogPost) => void
@@ -30,9 +30,10 @@ class FormData implements IFormData {
     formData.set(data)
   }
   clear(): void {
-    if (!confirm("Are you sure you want to clear all?")) {
-      return
-    }
+    // if (!confirm("Are you sure you want to clear all?")) {
+    //   return
+    // }
+    
     formData.set({
       title: "",
       subtitle: "",
@@ -69,9 +70,9 @@ class FormData implements IFormData {
    * @return {void} This function does not return a value.
    */
   removeParagraph(id: ID): void {
-    if (!confirm("Are you sure you want to remove item with id: " + id + "?")) {
-      return
-    }
+    // if (!confirm("Are you sure you want to remove item with id: " + id + "?")) {
+    //   return
+    // }
     formData.update((v) => {
       if (v.content) {
         return {

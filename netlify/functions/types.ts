@@ -57,6 +57,11 @@ enum ApiRoutes {
   BlogPosts = "/api/blog-posts/",
 }
 
+type User = {
+  username: string
+  password: string
+}
+
 export { PersonName, BlogCategory, ApiRoutes, ContentTypes }
 
-export type { ID, Author, ParagraphContent, BlogPost, Quote }
+export type { ID, Author, ParagraphContent, BlogPost, Quote, User }

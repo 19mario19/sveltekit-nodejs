@@ -4,8 +4,7 @@ import serverless from "serverless-http" // Library for deploying Express.js app
 import dotenv from "dotenv" // Library for loading environment variables from a .env file
 import mongoose from "mongoose" // MongoDB ODM (Object Data Modeling) library for Node.js
 import cors from "cors" // Middleware for enabling Cross-Origin Resource Sharing (CORS)
-import blogPostRoutes from "./routes/blogPostRoutes" // Importing router module for note-related routes
-
+import blogPostRoutes from "./routes/blogPostRoutes" 
 // Load environment variables from .env file into process.env
 dotenv.config()
 

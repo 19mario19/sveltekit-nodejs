@@ -10,6 +10,7 @@ enum PersonName {
 }
 
 type Author = {
+  img: string
   name: PersonName
   description: string
 }
@@ -44,12 +45,13 @@ enum ContentTypes {
 }
 
 type BlogPost = {
+  _id?: string
   mainImage?: string
   title?: string
   subtitle?: string
   content?: ParagraphContent[]
   category?: BlogCategory
-  author?: Author
+  author: Author
   createdAt?: string
 }
 
@@ -57,6 +59,28 @@ enum ApiRoutes {
   BlogPosts = "/api/blog-posts/",
 }
 
-export { PersonName, BlogCategory, ApiRoutes, ContentTypes }
+enum RoutePath {
+  Home = "/",
+  Posts = "/posts",
+  Create = "/create",
+  Random = "/random",
+}
 
-export type { ID,Author, ParagraphContent, BlogPost, Quote }
+enum ContainerDimension {
+  ExtraSmall = "max-width: var(--bp-sm);",
+  Small = "max-width: var(--bp-md);",
+  Medium = "max-width: var(--bp-lg);",
+  Large = "max-width: var(--bp-xl);",
+  ExtraLarge = "max-width: var(--bp-2xl);",
+}
+
+export {
+  PersonName,
+  BlogCategory,
+  ApiRoutes,
+  ContentTypes,
+  ContainerDimension,
+  RoutePath,
+}
+
+export type { ID, Author, ParagraphContent, BlogPost, Quote }
