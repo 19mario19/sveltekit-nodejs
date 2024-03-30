@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { BlogPostModel, IBlogPostDocument } from "../models/BlogPostModel"
+import { BlogPostModel } from "../models/blogPostModel"
 import { BlogPost } from "../types"
 
 async function getBlogPosts(_req: Request, res: Response) {
@@ -51,12 +51,10 @@ async function removeBlogPost(req: Request, res: Response) {
     if (!deletedBlogPost) {
       return res.status(404).json({ error: "Blog post not found" })
     }
-    return res
-      .status(200)
-      .json({
-        message: "Blog post deleted successfully",
-        blogPost: deletedBlogPost,
-      })
+    return res.status(200).json({
+      message: "Blog post deleted successfully",
+      blogPost: deletedBlogPost,
+    })
   } catch (error) {
     return res.status(500).json({ error: error.message })
   }
