@@ -24,6 +24,7 @@
     & .posts {
       display: flex;
       flex-wrap: wrap;
+      gap: 1rem;
       justify-content: center;
       margin: 2rem 0;
     }

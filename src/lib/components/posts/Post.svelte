@@ -12,15 +12,19 @@
     </div>
     <div class="bottom">
       <img src={post.mainImage} alt={post.title} />
-      <p>{post.category}</p>
+      {#if post.createdAt}
+        <p>{new Date(post.createdAt).toLocaleDateString()}</p>
+      {/if}
     </div>
   </div>
 </a>
 
 <style>
   .post {
-    display: flex;
-    flex-direction: column;
+    /* display: flex;
+    flex-direction: column; */
+    display: grid;
+    grid-template-rows: 180px 4fr;
     gap: 1rem;
     width: 400px;
     padding: 2rem;
@@ -28,15 +32,22 @@
     border-radius: 15px;
     text-align: center;
 
+    border: 1px solid var(--l-35);
 
     & .top {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-rows: 1fr 1fr;
       gap: 1rem;
-      
-    }
 
-  
+      & p {
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Limit the number of lines to 2 */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: 3rem; /* Adjust based on line height and number of lines */
+      }
+    }
 
     & .bottom img {
       width: 100%;

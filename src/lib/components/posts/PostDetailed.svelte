@@ -2,14 +2,17 @@
   import { invalidateAll } from "$app/navigation"
   import type { BlogPost } from "$lib/types"
   import { recordAuthors } from "$lib/authorsDb"
-  import { PersonName } from "$lib/types"
+  import { ContainerDimension, PersonName } from "$lib/types"
   import Author from "../author/Author.svelte"
+  import PostContent from "./PostContent.svelte"
+  import Container from "../shared/Container.svelte"
 
   export let post: BlogPost
 
   let author = recordAuthors[post.author.name || PersonName.DenaliBella]
 
   async function remove() {
+    if (!confirm("Are you sure you want to delete this post?")) return
     try {
       let res = await fetch("/api/blog-posts/" + post._id, {
         method: "DELETE",
@@ -25,33 +28,37 @@
   }
 </script>
 
-<div class="container">
-  <div class="post">
-    <div class="top">
-      <div class="content">
-        <div class="layout" />
-        <h1>{post.title}</h1>
-        <h3>{post.subtitle}</h3>
+<Container dimentions={ContainerDimension.Large}>
+  <div class="wrapper">
+    <div class="post">
+      <div class="top">
+        <div class="content">
+          <div class="layout" />
+          <h1>{post.title}</h1>
+          <h3>{post.subtitle}</h3>
+        </div>
+        <img src={post.mainImage} alt={post.title} />
       </div>
-      <img src={post.mainImage} alt={post.title} />
-    </div>
-    <div class="bottom">
-      <Author {author} />
-      <div class="content">
-        <pre>{JSON.stringify(post.content, null, 2)}</pre>
-      </div>
+      <Container dimentions={ContainerDimension.Small}>
+        <div class="bottom">
+          {#if post.content}
+            <PostContent content={post.content} />
+          {/if}
+          <Author {author} />
+          <a href="/posts/">
+            <button class="remove" on:click={remove}>Remove</button>
+          </a>
+        </div>
+      </Container>
     </div>
   </div>
-  <a href="/posts/">
-    <button class="remove" on:click={remove}>Remove</button>
-  </a>
-</div>
+</Container>
 
 <style>
-  .container {
-    margin: 0 auto;
-  }
 
+  .wrapper {
+    margin-bottom: 5rem;
+  }
   .post {
     display: flex;
     flex-direction: column;
@@ -117,9 +124,10 @@
       }
     }
     & .bottom {
-      display: grid;
-      grid-template-columns: 1fr 3fr;
-      align-items: flex-start;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       gap: 4rem;
     }
   }

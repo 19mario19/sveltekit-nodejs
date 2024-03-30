@@ -111,35 +111,39 @@ h6 {
 
 h1 {
     font-size: var(--fs-xl);
-    line-height: 40px;
+    line-height: 48px;
+    /* Adjusted line height */
 }
 
 h2 {
     font-size: var(--fs-lg);
-    line-height: 30px;
+    line-height: 36px;
+    /* Adjusted line height */
 }
 
 h3 {
     font-size: var(--fs-base);
-    line-height: 30px;
+    line-height: 36px;
+    /* Adjusted line height */
 }
 
 h4 {
     font-size: var(--fs-sm-xl);
-    line-height: 26px;
+    line-height: 32px;
+    /* Adjusted line height */
 }
 
 h5 {
     font-size: var(--fs-sm-s);
-    line-height: 24px;
+    line-height: 28px;
+    /* Adjusted line height */
 }
-
-
 
 /* Paragraph styles */
 p {
     font-size: var(--fs-sm);
-    line-height: 22px;
+    line-height: 26px;
+    /* Adjusted line height */
 }
 
 strong>p {
@@ -316,12 +320,13 @@ article {
 
 
     /* Font Sizes */
-    --fs-sm: 14px;
-    --fs-sm-s: 16px;
-    --fs-sm-xl: 18px;
-    --fs-base: 21px;
-    --fs-lg: 28px;
-    --fs-xl: 35px;
+    /* Font Sizes */
+    --fs-sm: 16px;
+    --fs-sm-s: 18px;
+    --fs-sm-xl: 20px;
+    --fs-base: 24px;
+    --fs-lg: 32px;
+    --fs-xl: 40px;
 
     /* Spacing */
     --sp-sm: .5rem;

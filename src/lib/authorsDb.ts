@@ -17,7 +17,7 @@ const recordAuthors: Record<PersonName, Author> = {
     description: "Award-winning poet celebrated for her evocative verses.",
   },
   [PersonName.DavidBrown]: {
-    img: "https://c.wallhere.com/photos/92/6a/Chen_Wang_face_portrait_women_closeup_digital_art_artwork_looking_at_viewer-2159717.jpg!d",
+    img: "https://c.wallhere.com/images/58/74/c4e1970cd67b4a95cffd56ff9d2f-2282668.jpg!d",
     name: PersonName.DavidBrown,
     description:
       "Prolific science fiction author known for his imaginative worlds.",

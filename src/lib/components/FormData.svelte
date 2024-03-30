@@ -214,8 +214,7 @@
           {#if errors.subtitle}
             <p class="error">{errors.subtitle}</p>
           {/if}
-          <input
-            type="text"
+          <textarea
             class="subtitle"
             class:error={errors.subtitle}
             placeholder={errors.title
@@ -478,7 +477,8 @@
     font-weight: bold;
   }
 
-  input.subtitle {
+  textarea.subtitle {
+    font-size: var(--fs-base);
     font-weight: 600;
   }
 

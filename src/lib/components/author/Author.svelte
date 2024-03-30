@@ -17,15 +17,16 @@
 <style>
   .author {
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     align-items: center;
     justify-content: center;
     gap: 1rem;
     padding: 2rem;
     border-radius: 15px;
     text-align: center;
-
+    width: 100%;
     background-color: var(--l-10);
+    /* border: 1px solid var(--l-50); */
 
     & .top {
       position: relative;
@@ -44,6 +45,8 @@
         bottom: 0px;
         left: 50%;
         transform: translateX(-50%);
+
+        min-width: 150px;
 
         background-color: var(--p-50);
         padding: 0.2rem 0.5rem;
