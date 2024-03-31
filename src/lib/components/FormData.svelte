@@ -123,7 +123,7 @@
 
   let response: ResponseType = ResponseType.Initiated
 
-  async function submit(e: Event) {
+  async function submit() {
     // e.preventDefault()
 
     // Form validation
@@ -150,6 +150,7 @@
 
     try {
       response = ResponseType.Initiated
+      console.log("To be posted:", $formData)
       const res = await fetch("/api/posts/", {
         method: "POST",
         body: JSON.stringify($formData),
@@ -396,7 +397,7 @@
     }
   }
 
-  .category  {
+  .category {
     display: flex;
     margin: 0 auto;
 
@@ -405,8 +406,6 @@
       border-radius: 15px;
       margin: 0 auto;
     }
-
-    
   }
 
   .buttons {

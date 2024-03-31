@@ -9,17 +9,19 @@ export const GET: RequestHandler = async () => {
   return json({ blogPosts: toJSON(blogPosts) })
 }
 
-export const POST: RequestHandler = async ({ request: { body } }) => {
+export const POST: RequestHandler = async ({ request }) => {
+  const body = await request.json() // Parse the JSON body from the request
+
   try {
     const newBlogPost = await BlogPost.create(body)
     return json({ message: "Blog post created", blogPost: toJSON(newBlogPost) })
   } catch (error) {
     console.error("Error creating blog post:", error)
-    // Check for specific error types (e.g., validation errors)
-    // and return a more informative message in the response
     return json(
       {
-        error: (error as Error).message || "Failed to create blog post. Please try again.",
+        error:
+          (error as Error).message ||
+          "Failed to create blog post. Please try again.",
       },
       { status: 500 },
     )
