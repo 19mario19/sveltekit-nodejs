@@ -111,6 +111,10 @@
     ],
   }
 
+  let authors: PersonName[] = Object.values(PersonName)
+  form.author =
+    recordAuthors[authors[Math.floor(Math.random() * authors.length)]]
+
   const data = formDataInstance(form)
 
   enum ResponseType {
