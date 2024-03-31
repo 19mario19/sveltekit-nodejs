@@ -56,7 +56,7 @@ type BlogPost = {
 }
 
 enum ApiRoutes {
-  BlogPosts = "/api/blog-posts/",
+  BlogPosts = "/api/posts/",
 }
 
 enum RoutePath {

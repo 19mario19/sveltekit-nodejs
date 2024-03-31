@@ -1,31 +1,12 @@
-import { Schema, Document, model } from "mongoose"
-import { BlogCategory, Author, PersonName } from "../types"
+import { Schema, model } from "mongoose"
+import { BlogCategory, type Author, PersonName } from "$lib/types"
 
-interface IBlogPostDocument extends Document {
-  title: string
-  subtitle: string
-  mainImage?: string
-  content: {
-    subheading?: string
-    subtitle?: string
-    description?: string
-    image?: string
-    quote?: {
-      content: string
-      author: string
-    }
-  }[]
-  category: BlogCategory
-  author: Author
-  createdAt?: Date
-  updatedAt?: Date
-}
 
 const blogPostSchema = new Schema(
   {
     title: { type: String, required: true },
     subtitle: { type: String, required: true },
-    mainImage: { type: String , required: true },
+    mainImage: { type: String, required: true },
     content: [
       {
         subheading: { id: { type: Number }, type: String },
@@ -52,7 +33,6 @@ const blogPostSchema = new Schema(
   { timestamps: true },
 )
 
+const BlogPostModel = model("BlogPost", blogPostSchema)
 
-const BlogPostModel = model<IBlogPostDocument>("BlogPost", blogPostSchema)
-
-export { BlogPostModel, IBlogPostDocument }
+export { BlogPostModel }

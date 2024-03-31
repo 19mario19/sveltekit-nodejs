@@ -9,6 +9,7 @@ const formData: Writable<BlogPost> = writable({
   title: "",
   subtitle: "",
   mainImage: "",
+  author: recordAuthors[PersonName.DenaliBella],
   content: [],
 })
 

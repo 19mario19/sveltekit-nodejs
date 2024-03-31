@@ -9,12 +9,13 @@
 
   export let post: BlogPost
 
-  let author = recordAuthors[post.author.name || PersonName.DenaliBella]
+  let author = recordAuthors[PersonName.DenaliBella]
+  if (post.author && post.author.name) author = recordAuthors[post.author.name]
 
   async function remove() {
     if (!confirm("Are you sure you want to delete this post?")) return
     try {
-      let res = await fetch("/api/blog-posts/" + post._id, {
+      let res = await fetch("/api/posts/" + post._id, {
         method: "DELETE",
       })
       if (res.ok) {
@@ -55,7 +56,6 @@
 </Container>
 
 <style>
-
   .wrapper {
     margin-bottom: 5rem;
   }

@@ -150,7 +150,7 @@
 
     try {
       response = ResponseType.Initiated
-      const res = await fetch("/api/blog-posts/", {
+      const res = await fetch("/api/posts/", {
         method: "POST",
         body: JSON.stringify($formData),
         headers: {
@@ -158,6 +158,7 @@
         },
       })
       if (res.ok) {
+        console.log("Blog post created")
         response = ResponseType.Success
         data.clear()
         invalidateAll()

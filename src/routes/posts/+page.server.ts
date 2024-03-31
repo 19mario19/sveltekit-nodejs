@@ -1,8 +1,13 @@
 import type { PageServerLoad } from "./$types"
 
-export const load = (async ({ fetch }) => {
-  const res = await fetch("/api/blog-posts/")
-  const { blogPosts } = await res.json()
+export const load: PageServerLoad = async ({ fetch }) => {
+  try {
+    const res = await fetch("/api/posts")
+    const { blogPosts } = await res.json()
 
-  return { blogPosts }
-}) satisfies PageServerLoad
+    return { blogPosts }
+  } catch (error) {
+    console.error("Error fetching tutorials from MongoDB:", error)
+    throw error
+  }
+}
