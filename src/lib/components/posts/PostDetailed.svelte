@@ -24,7 +24,7 @@
     } catch (error) {
       console.log((error as Error).message)
     } finally {
-      console.log("Remvoved!")
+      console.log("Removed!")
     }
   }
 </script>
