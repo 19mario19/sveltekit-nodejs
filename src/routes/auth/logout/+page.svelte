@@ -4,4 +4,6 @@
   export let data: PageData
 </script>
 
-<h1>Home Page</h1>
+<form action="?/logout" method="POST">
+  <button>Log out</button>
+</form>

@@ -1,9 +1,12 @@
 <script lang="ts">
   import { page } from "$app/stores"
-  import { ContainerDimension, RoutePath } from "$lib/types"
+  import { ContainerDimension, RoutePath, UserRole } from "$lib/types"
   import Container from "./shared/Container.svelte"
+
   let active: RoutePath = $page.url.pathname as RoutePath
   $: active = $page.url.pathname as RoutePath
+
+  $: role = $page.data.user?.role
 </script>
 
 <div class="container-wrapper">
@@ -21,11 +24,34 @@
             >Posts</a
           >
         </li>
-        <li>
-          <a class:active={active === RoutePath.Create} href={RoutePath.Create}
-            >Create</a
-          >
-        </li>
+        {#if role === UserRole.WRITER}
+          <li>
+            <a
+              class:active={active === RoutePath.Create}
+              href={RoutePath.Create}>Create</a
+            >
+          </li>
+        {/if}
+        {#if role === UserRole.ADMIN}
+          <li>
+            <a
+              class:active={active === RoutePath.Create}
+              href={RoutePath.Create}>Dashboard</a
+            >
+          </li>
+        {/if}
+        {#if !$page.data.user}
+          <li>
+            <a class="login" href="/auth/login">Login</a>
+          </li>
+          <li>
+            <a class="register" href="/auth/register">Register</a>
+          </li>
+        {:else}
+          <li>
+            <a href="/auth/logout">Logout</a>
+          </li>
+        {/if}
       </ul>
     </nav>
   </Container>
@@ -66,13 +92,25 @@
     color: var(--a);
   }
 
-  h1, li {
+  h1,
+  li {
     font-family: var(--font-t);
   }
   h1::first-letter {
     font-size: 50px;
     color: var(--a);
     text-shadow: var(--bs-sm);
+  }
+
+  a.login,
+  a.register {
+    background-color: var(--a);
+    color: white;
+    padding: 0.25rem 1rem;
+    border-radius: 15px;
+  }
+  a.register {
+    background-color: var(--p);
   }
 
   @media screen and (max-width: 768px) {

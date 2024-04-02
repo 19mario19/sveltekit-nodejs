@@ -359,3 +359,9 @@ article {
     padding: 0;
 
 }
+
+.error {
+    background-color: var(--a-35);
+    padding: 1rem;
+    border-radius: 15px;
+}

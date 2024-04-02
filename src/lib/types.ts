@@ -74,6 +74,20 @@ enum ContainerDimension {
   ExtraLarge = "max-width: var(--bp-2xl);",
 }
 
+enum UserRole {
+  ADMIN = "ADMIN",
+  WRITER = "WRITER",
+  USER = "USER",
+}
+
+type User = {
+  _id: string
+  name: ""
+  password: ""
+  userAuthToken: ""
+  role: UserRole
+}
+
 export {
   PersonName,
   BlogCategory,
@@ -81,6 +95,7 @@ export {
   ContentTypes,
   ContainerDimension,
   RoutePath,
+  UserRole,
 }
 
-export type { ID, Author, ParagraphContent, BlogPost, Quote }
+export type { ID, Author, ParagraphContent, BlogPost, Quote, User }
