@@ -5,9 +5,10 @@ import type { User } from "$lib/types"
 
 import { UserModel } from "$lib/db/models/UserModel"
 
-export const load = (async () => {
-  // TO DO
-  return {}
+export const load = (async ({ locals }) => {
+  if (locals.user) {
+    redirect(302, "/")
+  }
 }) satisfies PageServerLoad
 
 const login: Action = async ({ request, cookies }) => {
@@ -50,7 +51,7 @@ const login: Action = async ({ request, cookies }) => {
   const authenticatedUser: User | null = await UserModel.findOneAndUpdate(
     { name },
     { $set: { userAuthToken: crypto.randomUUID() } },
-    { new: true }
+    { new: true },
   )
 
   // Set session cookie

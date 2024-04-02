@@ -49,7 +49,9 @@
           </li>
         {:else}
           <li>
-            <a href="/auth/logout">Logout</a>
+            <form method="POST">
+              <button formaction="/auth/logout" type="submit">Log out</button>
+            </form>
           </li>
         {/if}
       </ul>
@@ -103,12 +105,19 @@
   }
 
   a.login,
-  a.register {
+  a.register,
+  button {
+    font-family: var(--font-t);
+
     background-color: var(--a);
     color: white;
     padding: 0.25rem 1rem;
     border-radius: 15px;
   }
+  button {
+    font-size: var(--fs-base);
+  }
+
   a.register {
     background-color: var(--p);
   }

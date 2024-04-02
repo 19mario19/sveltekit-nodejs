@@ -5,8 +5,11 @@ import bcrypt from "bcrypt"
 import { UserRole, type User } from "$lib/types"
 import { UserModel } from "$lib/db/models/UserModel"
 
-export const load = (async ({}) => {
+export const load = (async ({ locals }) => {
   // TO DO
+  if (locals.user) {
+    redirect(302, "/")
+  }
 }) satisfies PageServerLoad
 
 const register: Action = async ({ request, cookies }) => {
