@@ -1,5 +1,8 @@
 import { connectMongoDB } from "$lib/db/db"
+import { BlogPostModel } from "$lib/db/models/BlogPostModel"
 import { UserModel } from "$lib/db/models/UserModel"
+
+import { UserRole } from "$lib/types"
 import { toJSON } from "$lib/utils/toJSON"
 import type { Handle } from "@sveltejs/kit"
 
@@ -33,6 +36,13 @@ export const handle: Handle = async ({ event, resolve }) => {
     event.locals.user = {
       name: user.name,
       role: user.role,
+    }
+    if (user.role === UserRole.ADMIN) {
+      const users: any[] = await UserModel.find({}).lean()
+      event.locals.users = toJSON(users)
+
+      const posts: any[] = await BlogPostModel.find({}).lean()
+      event.locals.posts = toJSON(posts)
     }
   }
 

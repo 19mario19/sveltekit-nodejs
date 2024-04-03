@@ -11,18 +11,14 @@
 </script>
 
 <Navbar />
-
 <div class="container">
-  {#if data.user}
-    <h1>Hello, {data.user?.name} with role {data.user?.role}</h1>
-  {/if}
-  <h3>Pathname: {$page.url.pathname}</h3>
+  <p>{$page.url.pathname === "/" ? "/home" : $page.url.pathname}</p>
 </div>
 
 <slot />
 
 <style>
   .container {
-    padding: 2rem;
+    padding:1rem ;
   }
 </style>

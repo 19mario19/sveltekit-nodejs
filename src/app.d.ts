@@ -11,6 +11,8 @@ declare global {
         name: string
         role: UserRole
       }
+      users: any[]
+      posts: any[]
     }
     // interface PageData {}
     // interface PageState {}

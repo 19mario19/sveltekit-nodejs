@@ -63,6 +63,7 @@ enum RoutePath {
   Home = "/",
   Posts = "/posts",
   Create = "/create",
+  Dashboard = "/dashboard",
   Random = "/random",
 }
 

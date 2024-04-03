@@ -6,7 +6,7 @@
   let active: RoutePath = $page.url.pathname as RoutePath
   $: active = $page.url.pathname as RoutePath
 
-  $: role = $page.data.user?.role
+  $: role = $page.data.user?.role as UserRole
 </script>
 
 <div class="container-wrapper">
@@ -35,8 +35,8 @@
         {#if role === UserRole.ADMIN}
           <li>
             <a
-              class:active={active === RoutePath.Create}
-              href={RoutePath.Create}>Dashboard</a
+              class:active={active === RoutePath.Dashboard}
+              href={RoutePath.Dashboard}>Dashboard</a
             >
           </li>
         {/if}
