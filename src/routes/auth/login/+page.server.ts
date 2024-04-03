@@ -27,7 +27,7 @@ const login: Action = async ({ request, cookies }) => {
     !password
   ) {
     // If not valid, throw an error named invalid
-    throw fail(400, { invalid: true })
+    return fail(400, { invalid: true })
   }
 
   // Check if the user exists
