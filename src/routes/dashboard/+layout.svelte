@@ -1,68 +1,71 @@
 <script lang="ts">
-  import type { LayoutData } from "./$types"
-  import Container from "$lib/components/shared/Container.svelte"
   import { ContainerDimension } from "$lib/types"
-  import Users from "../../lib/components/dashboard/tabs/Users.svelte"
-  import Posts from "../../lib/components/dashboard/tabs/Posts.svelte"
+  import Container from "$lib/components/shared/Container.svelte"
+  import type { LayoutData } from "./$types"
+  import { page } from "$app/stores"
 
-  enum DashboardTabs {
-    Users = "users",
-    Posts = "posts",
+  enum Tabs {
+    Users = "/dashboard/tabs/users",
+    Posts = "/dashboard/tabs/posts",
   }
 
-  export let active: DashboardTabs = DashboardTabs.Users
+  let active = $page.url.pathname as Tabs
+  $: active = $page.url.pathname as Tabs
+
+  $: console.log(active)
+
+  export let data: LayoutData
 </script>
 
 <Container>
-  <div class="dashboard">
-    <nav>
-      <h2>Dashboard</h2>
-      <ul>
-        <li>
-          <a href="/dashboard/tabs/users">
-            <button
-              on:click={() => (active = DashboardTabs.Users)}
-              class:active={active === DashboardTabs.Users}>Users</button
-            >
-          </a>
-        </li>
-        <li>
-          <a href="/dashboard/tabs/posts">
-            <button
-              on:click={() => (active = DashboardTabs.Posts)}
-              class:active={active === DashboardTabs.Posts}>Posts</button
-            >
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </div>
+  <nav>
+    <h1>Dashboard</h1>
+    <ul>
+      <li>
+        <a class:active={active === Tabs.Users} href="/dashboard/tabs/users"
+          >Users</a
+        >
+      </li>
+      <li>
+        <a class:active={active === Tabs.Posts} href="/dashboard/tabs/posts"
+          >Posts</a
+        >
+      </li>
+    </ul>
+  </nav>
   <slot />
 </Container>
 
 <style>
-  .dashboard {
+  nav {
     display: flex;
-    border-bottom: 1px solid var(--p-50);
-    & nav {
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+
+    & h1 {
+      font-size: var(--fs-lg);
+    }
+
+    & ul {
       display: flex;
-      justify-content: space-between;
+      gap: 1rem;
 
-      width: 100%;
+      & li {
+        font-size: var(--fs-base);
 
-      padding: 1rem;
-      & ul {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
+        & a {
+          padding: 0.5rem 1rem;
+          border-radius: 15px;
+          border: 1px solid var(--l-50);
+          font-weight: bold;
 
-        & button {
-          font-size: var(--fs-sm-xl);
-          font-family: var(--font-t);
-        }
-        & .active {
-          background-color: var(--a-75);
-          color: white;
+          transition: var(--med);
+
+          &.active {
+            background-color: var(--a-50);
+            color: white;
+          }
         }
       }
     }

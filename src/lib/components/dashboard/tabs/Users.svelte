@@ -1,26 +1,27 @@
 <script lang="ts">
-
-  export let users: any[];
+  
+  export let users: any[]
 </script>
-
-<div class="users">
-  <h2>Users</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Active</th>
-      </tr>
-    </thead>
-    <tbody>
-      {#each users as user, i}
-        <tr style="background-color: {i % 2 === 0 ? 'var(--s-10)' : 'var(--s-35)'}">
+  <div class="users">
+    <h2>Users</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Role</th>
+          <th>Active</th>
+          <th>Created At</th>
+          <th>Updated At</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#each users as user}
+        <tr>
           <td>{user.name}</td>
-          <td>{user.email}</td>
           <td>{user.role}</td>
-          <td>{user.isActive ? 'Yes' : 'No'}</td>
+          <td>{user.isActive ? "Active" : "Inactive"}</td>
+          <td>{new Date(user.createdAt).toLocaleString()}</td>
+          <td>{new Date(user.updatedAt).toLocaleString()}</td>
         </tr>
       {/each}
     </tbody>
@@ -29,21 +30,39 @@
 
 <style>
   .users {
-    padding: 1rem;
-    background-color: var(--l-10);
-    border-radius: 5px;
+    background-color: var(--l);
+    border-radius: 0.5rem;
+    font-family: var(--font-s);
+
+    & h2 {
+      text-align: right;
+      padding: 1rem;
+    }
   }
+
   table {
     width: 100%;
     border-collapse: collapse;
+    background-color: var(--l);
   }
-  th, td {
-    padding: 8px;
+
+  th,
+  td {
+    padding: 0.75rem;
     text-align: left;
-    border-bottom: 1px solid var(--s-50);
   }
+
   th {
     background-color: var(--blue);
     color: var(--l);
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: var(--s-10);
+  }
+
+  tr:hover {
+    background-color: var(--s-35);
   }
 </style>

@@ -7,7 +7,7 @@
 </script>
 
 <Container>
-  <div class="cont-wrap">
+  <div class="main">
     <h1>Here are the latest posts</h1>
     <div class="posts">
       {#each data.blogPosts as post}
@@ -18,7 +18,7 @@
 </Container>
 
 <style>
-  .cont-wrap {
+  .main {
     display: flex;
     flex-direction: column;
     & .posts {

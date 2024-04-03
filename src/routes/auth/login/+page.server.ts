@@ -35,7 +35,7 @@ const login: Action = async ({ request, cookies }) => {
 
   // If the user does not exist, throw an error named user
   if (!user) {
-    throw fail(400, { credentials: true })
+    return fail(400, { credentials: true })
   }
 
   // Check if the password is correct, by comparing it to the hashed password
@@ -44,7 +44,7 @@ const login: Action = async ({ request, cookies }) => {
 
   // If the password is not correct, throw an error named credentials
   if (!userPassword) {
-    throw fail(400, { credentials: true })
+    return fail(400, { credentials: true })
   }
 
   // Generate new authorization token

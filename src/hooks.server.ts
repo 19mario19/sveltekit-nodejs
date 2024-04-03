@@ -24,15 +24,14 @@ export const handle: Handle = async ({ event, resolve }) => {
     // If no session, load page as normal
     return await resolve(event)
   }
-  console.log(session, typeof session)
+
   // If session, find user based on session
   const user = await UserModel.findOne({
     userAuthToken: toJSON(session),
   })
-  console.log("Within handle: ", user)
-
   // Add user to locals
   if (user) {
+    console.log(`User: ${user.name}, with role: ${user.role}`)
     event.locals.user = {
       name: user.name,
       role: user.role,
@@ -43,6 +42,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 
       const posts: any[] = await BlogPostModel.find({}).lean()
       event.locals.posts = toJSON(posts)
+
+      console.log(event.locals)
     }
   }
 

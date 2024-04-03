@@ -1,5 +1,4 @@
 <script lang="ts">
-
   export let posts: any[]
 </script>
 
@@ -10,19 +9,24 @@
       <tr>
         <th>Title</th>
         <th>Author</th>
-        <th>Category</th>
+        <th>Main Image</th>
+        <th>Created At</th>
+        <th>Updated At</th>
       </tr>
     </thead>
     <tbody>
-      {#each posts as post, i}
-        <tr
-          style="background-color: {i % 2 === 0
-            ? 'var(--s-10)'
-            : 'var(--s-35)'}"
-        >
+      {#each posts as post}
+        <tr>
           <td>{post.title}</td>
           <td>{post.author.name}</td>
-          <td>{post.category}</td>
+          <td><img src={post.mainImage} alt={post.title} width="100" /></td>
+          <td>{new Date(post.createdAt).toLocaleString()}</td>
+          <td
+            >{new Date(post.updatedAt).toLocaleString() ===
+            new Date(post.createdAt).toLocaleString()
+              ? "Not updated"
+              : new Date(post.updatedAt).toLocaleString()}</td
+          >
         </tr>
       {/each}
     </tbody>
@@ -32,21 +36,44 @@
 <style>
   .posts {
     padding: 1rem;
-    background-color: var(--l-10);
-    border-radius: 5px;
+    background-color: var(--l);
+    border-radius: 0.5rem;
+    font-family: var(--font-s);
   }
+
+  .posts h2 {
+    text-align: right;
+    padding: 1rem;
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;
+    background-color: var(--l);
   }
+
   th,
   td {
-    padding: 8px;
+    padding: 0.75rem;
     text-align: left;
-    border-bottom: 1px solid var(--s-50);
   }
+
   th {
     background-color: var(--blue);
     color: var(--l);
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: var(--s-10);
+  }
+
+  tr:hover {
+    background-color: var(--s-35);
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
   }
 </style>

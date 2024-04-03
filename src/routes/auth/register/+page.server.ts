@@ -33,35 +33,31 @@ const register: Action = async ({ request, cookies }) => {
   }
 
   // If the user does not exist, we create a new one
-  const authenticatedUser = await UserModel.create(
-    {
-      name,
-      password: await bcrypt.hash(password, 10),
-      userAuthToken: crypto.randomUUID(),
-      role: UserRole.USER,
-    },
-    {
-      new: true,
-    },
-  )
+  const hashedPassword = await bcrypt.hash(password, 10)
+  const userAuthToken = crypto.randomUUID()
 
-  if (authenticatedUser) {
-    cookies.set("session", (authenticatedUser as any).userAuthToken, {
-      // send cookie for every page
+  const newUser = await UserModel.create({
+    name,
+    password: hashedPassword,
+    userAuthToken,
+    role: UserRole.USER,
+  })
+
+  // Set session cookie
+  if (newUser) {
+    cookies.set("session", userAuthToken, {
       path: "/",
-      // server side only cookie so you can't use `document.cookie`
       httpOnly: true,
-      // only requests from same site can send cookies
-      // https://developer.mozilla.org/en-US/docs/Glossary/CSRF
       sameSite: "strict",
-      // only sent over HTTPS in production
-      secure: process.env.NODE_ENV === "production",
-      // set cookie to expire after a month
+      secure: true,
       maxAge: 60 * 60 * 24 * 30,
     })
-  }
 
-  throw redirect(303, "/auth/login")
+    // Redirect to home
+    throw redirect(303, "/posts")
+  } else {
+    throw new Error("Failed to create user")
+  }
 }
 
 export const actions: Actions = { register }

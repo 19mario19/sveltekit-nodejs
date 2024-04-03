@@ -4,4 +4,6 @@
   export let data: PageData
 </script>
 
-<Users users={data.users} />
+{#if data.users}
+  <Users users={data.users} />
+{/if}

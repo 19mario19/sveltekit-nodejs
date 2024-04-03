@@ -23,6 +23,9 @@
       {#if form?.user}
         <p class="error">User already exists.</p>
       {/if}
+      {#if form?.invalid}
+        <p class="error">Username and password is required.</p>
+      {/if}
 
       <button type="submit">Register</button>
     </form>

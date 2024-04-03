@@ -5,9 +5,9 @@
   export let data: LayoutData
 
   import { page } from "$app/stores"
-  import { enhance } from "$app/forms"
 
   $: console.log(data.user)
+  $: console.log($page.url.pathname)
 </script>
 
 <Navbar />
