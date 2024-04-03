@@ -1,11 +1,14 @@
 <script lang="ts">
   import { invalidateAll } from "$app/navigation"
-  import type { BlogPost } from "$lib/types"
+  import { type BlogPost, UserRole } from "$lib/types"
   import { recordAuthors } from "$lib/authorsDb"
   import { ContainerDimension, PersonName } from "$lib/types"
   import Author from "../author/Author.svelte"
   import PostContent from "./PostContent.svelte"
   import Container from "../shared/Container.svelte"
+  import { page } from "$app/stores"
+  import FormData from "../FormData.svelte"
+
 
   export let post: BlogPost
 
@@ -46,9 +49,11 @@
             <PostContent content={post.content} />
           {/if}
           <Author {author} />
-          <a href="/posts/">
-            <button class="remove" on:click={remove}>Remove</button>
-          </a>
+          {#if $page.data.user.role === UserRole.WRITER}
+            <a href="/posts/">
+              <button class="remove" on:click={remove}>Remove</button>
+            </a>
+          {/if}
         </div>
       </Container>
     </div>
