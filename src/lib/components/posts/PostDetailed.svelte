@@ -49,7 +49,7 @@
             <PostContent content={post.content} />
           {/if}
           <Author {author} />
-          {#if $page.data.user.role === UserRole.WRITER}
+          {#if $page.data.user?.role === UserRole.WRITER}
             <a href="/posts/">
               <button class="remove" on:click={remove}>Remove</button>
             </a>
