@@ -6,9 +6,8 @@
   import { ContainerDimension } from "$lib/types"
 </script>
 
-<Container>
+<Container dimentions={ContainerDimension.Small}>
   <div class="main">
-    <h1>Here are the latest posts</h1>
     <div class="posts">
       {#each data.blogPosts as post}
         <Post {post} />
@@ -23,17 +22,13 @@
     flex-direction: column;
     & .posts {
       display: flex;
+      flex-direction: column;
       flex-wrap: wrap;
-      gap: 1rem;
+      gap: 1.5rem;
       justify-content: center;
       margin: 2rem 0;
     }
   }
 
-  h1 {
-    padding: 2rem;
-    border-bottom: 1px solid var(--p);
-    font-family: var(--font-t);
-    text-align: center;
-  }
+  
 </style>

@@ -11,9 +11,9 @@
 </script>
 
 <Navbar />
-<div class="container">
+<!-- <div class="container">
   <p>{$page.url.pathname === "/" ? "/home" : $page.url.pathname}</p>
-</div>
+</div> -->
 
 <slot />
 

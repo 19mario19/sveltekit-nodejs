@@ -12,7 +12,7 @@
 <div class="container-wrapper">
   <Container dimentions={ContainerDimension.Large}>
     <nav aria-label="Main Navigation">
-      <h1>Blog</h1>
+      <h1>Wandering Worlds</h1>
       <ul>
         <li>
           <a class:active={active === RoutePath.Home} href={RoutePath.Home}
@@ -40,20 +40,23 @@
             >
           </li>
         {/if}
-        {#if !$page.data.user}
-          <li>
-            <a class="login" href="/auth/login">Login</a>
-          </li>
-          <li>
-            <a class="register" href="/auth/register">Register</a>
-          </li>
-        {:else}
-          <li>
-            <form method="POST">
-              <button formaction="/auth/logout" type="submit">Log out</button>
-            </form>
-          </li>
-        {/if}
+
+        <div class="auth">
+          {#if !$page.data.user}
+            <li>
+              <a class="login" href="/auth/login">Login</a>
+            </li>
+            <li>
+              <a class="register" href="/auth/register">Register</a>
+            </li>
+          {:else}
+            <li>
+              <form method="POST">
+                <button formaction="/auth/logout" type="submit">Log out</button>
+              </form>
+            </li>
+          {/if}
+        </div>
       </ul>
     </nav>
   </Container>
@@ -61,7 +64,7 @@
 
 <style>
   .container-wrapper {
-    background-color: var(--l-10);
+    background-color: white;
     z-index: 9999;
 
     position: sticky;
@@ -72,26 +75,54 @@
 
   nav {
     display: flex;
+    flex-direction: column;
     align-items: center;
     padding: var(--sp-base) var(--sp-lg);
+
+    border-bottom: 1px solid var(--l-75);
+
+    &.flex-nav {
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   ul {
     display: flex;
     gap: 1rem;
-
+    line-height: 50px;
     width: 100%;
 
-    justify-content: end;
+    justify-content: center;
     align-items: center;
+
+    & .auth {
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      gap: 0.75rem;
+      padding: 0 0.4rem;
+      border-radius: 15px;
+
+      & a {
+        &:hover {
+          background-color: var(--a-50) ;
+        }
+      }
+    }
   }
 
   a {
-    font-size: var(--fs-base);
+    font-size: var(--fs-sm-xl);
   }
 
   .active {
     color: var(--a);
+  }
+
+  h1 {
+    transition: var(--med);
   }
 
   h1,
@@ -108,14 +139,13 @@
   a.register,
   button {
     font-family: var(--font-t);
-
     background-color: var(--a);
     color: white;
-    padding: 0.25rem 1rem;
+    padding: 0.25rem 0.5rem;
     border-radius: 15px;
   }
   button {
-    font-size: var(--fs-base);
+    font-size: var(--fs-sm-xl);
   }
 
   a.register {

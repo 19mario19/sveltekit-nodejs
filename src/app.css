@@ -2,6 +2,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Forum&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Forum&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lobster&display=swap');
 
+
+@import url('https://fonts.googleapis.com/css2?family=Domine:wght@400..700&family=Ultra&display=swap') ;
+
 /* Box model */
 *,
 *::before,
@@ -123,24 +126,25 @@ h2 {
 
 h3 {
     font-size: var(--fs-base);
-    line-height: 36px;
+    line-height: 30px;
     /* Adjusted line height */
 }
 
 h4 {
     font-size: var(--fs-sm-xl);
-    line-height: 32px;
+    line-height: 28px;
     /* Adjusted line height */
 }
 
 h5 {
     font-size: var(--fs-sm-s);
-    line-height: 28px;
+    line-height: 26px;
     /* Adjusted line height */
 }
 
 /* Paragraph styles */
 p {
+    font-family: var(--font-ps);
     font-size: var(--fs-sm);
     line-height: 26px;
     /* Adjusted line height */
@@ -295,6 +299,7 @@ article {
     --blue: #24a7ff;
 
     /* Light */
+    --l-05: #fafafa7f;
     --l-10: #fafafa;
     --l-35: #f5f5f5;
     --l-50: #f0f0f0;
@@ -317,10 +322,17 @@ article {
     --font-p: "Forum", serif;
     --font-s: 'Lato', sans-serif;
     --font-t: "Lobster", sans-serif;
+    
+    /* Fonts */
+    --font-p: "Forum", serif;
+    --font-ps: "Domine", serif;
+    --font-s: 'Lato', sans-serif;
+    --font-t: "Lobster", sans-serif;
 
 
     /* Font Sizes */
     /* Font Sizes */
+    --fs-sm-sm: 14px;
     --fs-sm: 16px;
     --fs-sm-s: 18px;
     --fs-sm-xl: 20px;

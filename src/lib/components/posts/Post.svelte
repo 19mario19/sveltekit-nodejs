@@ -7,53 +7,71 @@
 <a href="/posts/{post._id}">
   <div class="post">
     <div class="top">
+      <p class="category">{post.category}</p>
       <h3>{post.title}</h3>
       <p>{post.subtitle}</p>
+      {#if post.createdAt}
+        <p class="created">
+          Published at {new Date(post.createdAt).toLocaleDateString()}
+        </p>
+      {/if}
+      {#if post.updatedAt && post.updatedAt !== post.createdAt}
+        <p class="updated">
+          Updated at {new Date(post.updatedAt).toLocaleDateString()}
+        </p>
+      {/if}
+      <p>By <span>{post.author.name}</span></p>
     </div>
     <div class="bottom">
       <img src={post.mainImage} alt={post.title} />
-      {#if post.createdAt}
-        <p>{new Date(post.createdAt).toLocaleDateString()}</p>
-      {/if}
     </div>
   </div>
+
+  <div class="line"></div>
 </a>
 
 <style>
   .post {
-    /* display: flex;
-    flex-direction: column; */
     display: grid;
-    grid-template-rows: 180px 4fr;
-    gap: 1rem;
-    width: 400px;
-    padding: 2rem;
+    grid-template-columns: 1fr 2fr;
+    padding: 1rem;
+    gap: 2rem;
+    align-items: center;
+    
     transition: var(--slow);
-    border-radius: 15px;
-    text-align: center;
-
-    border: 1px solid var(--l-35);
-
+    
     & .top {
-      display: grid;
-      grid-template-rows: 1fr 1fr;
-      gap: 1rem;
-
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      
       & p {
-        display: -webkit-box;
-        -webkit-line-clamp: 2; /* Limit the number of lines to 2 */
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-height: 3rem; /* Adjust based on line height and number of lines */
+        & span {
+          font-weight: bold;
+          font-style: italic;
+          text-decoration: underline;
+          color: var(--p);
+        }
+        
+        &.updated,
+        &.created {
+          font-size: var(--fs-sm-sm);
+          font-weight: bold;
+          color: var(--p);
+        }
+
+        &.category {
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          font-weight: bold;
+          font-size: var(--fs-sm-sm);
+        }
       }
     }
-
     & .bottom img {
       width: 100%;
-      height: 400px;
+      height: 100%;
       object-fit: cover;
-      border-radius: 15px;
       transform-origin: center;
 
       transition: var(--slow);
@@ -64,7 +82,13 @@
       }
     }
     &:hover {
-      background-color: var(--l-35);
+      background-color: var(--l-10);
     }
+  }
+  .line {
+    width: 90%;
+    height: 1px;
+    background-color: var(--l-75);
+    margin: 0 auto;
   }
 </style>

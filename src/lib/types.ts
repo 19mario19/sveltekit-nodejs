@@ -53,6 +53,7 @@ type BlogPost = {
   category?: BlogCategory
   author: Author
   createdAt?: string
+  updatedAt?: string
 }
 
 enum ApiRoutes {
