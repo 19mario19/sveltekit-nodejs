@@ -68,9 +68,7 @@
     z-index: 9999;
 
     position: sticky;
-    top: 0;
 
-    opacity: 0.95;
   }
 
   nav {
@@ -101,8 +99,6 @@
       justify-content: center;
       align-items: center;
       display: flex;
-      gap: 0.75rem;
-      padding: 0 0.4rem;
       border-radius: 15px;
 
       & a {
@@ -123,6 +119,8 @@
 
   h1 {
     transition: var(--med);
+    text-decoration:  underline;
+    font-weight: 400;
   }
 
   h1,
@@ -130,9 +128,9 @@
     font-family: var(--font-t);
   }
   h1::first-letter {
-    font-size: 50px;
+    font-size: 55px;
     color: var(--a);
-    text-shadow: var(--bs-sm);
+    font-weight: bold;
   }
 
   a.login,
@@ -141,7 +139,6 @@
     font-family: var(--font-t);
     background-color: var(--a);
     color: white;
-    padding: 0.25rem 0.5rem;
     border-radius: 15px;
   }
   button {
