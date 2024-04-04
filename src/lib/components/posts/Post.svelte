@@ -71,6 +71,8 @@
     & .bottom img {
       width: 100%;
       height: 100%;
+      min-height: 300px;
+      max-height: 320px;
       object-fit: cover;
       transform-origin: center;
 

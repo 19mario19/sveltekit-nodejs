@@ -100,6 +100,7 @@
       align-items: center;
       display: flex;
       border-radius: 15px;
+      gap: .5rem;
 
       & a {
         &:hover {
@@ -140,6 +141,7 @@
     background-color: var(--a);
     color: white;
     border-radius: 15px;
+    padding: 0.1rem .5rem ;
   }
   button {
     font-size: var(--fs-sm-xl);
