@@ -33,7 +33,7 @@
 <style>
   .post {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 1.4fr;
     padding: 1rem;
     gap: 2rem;
     align-items: center;
@@ -70,17 +70,15 @@
     }
     & .bottom img {
       width: 100%;
-      height: 100%;
       min-height: 300px;
-      max-height: 320px;
+      height: 300px;
       object-fit: cover;
-      transform-origin: center;
+       object-position: top; 
 
       transition: var(--slow);
 
       &:hover {
         border-radius: 5px;
-        filter: blur(0);
       }
     }
     &:hover {
