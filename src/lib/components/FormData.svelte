@@ -8,108 +8,108 @@
   import Container from "$lib/components/shared/Container.svelte"
   import { ContainerDimension } from "$lib/types"
 
-  // let form: BlogPost = {
-  //   title: "",
-  //   subtitle: "",
-  //   mainImage: "",
-  //   content: [] as ParagraphContent[],
-  //   category: BlogCategory.Art,
-  //   author: recordAuthors[PersonName.DenaliBella],
-  // }
-
-  // Initializes the form with default values
   let form: BlogPost = {
-    title:
-      "Unleash Your Inner Supermodel: A Comprehensive Guide to Modeling for Women",
-    subtitle:
-      "Discover the secrets to a successful and empowering modeling career",
-    mainImage:
-      "https://c.wallhere.com/images/d0/d0/3c9203dca6873e85879197389228-1520111.jpg!d",
+    title: "",
+    subtitle: "",
+    mainImage: "",
+    content: [] as ParagraphContent[],
     category: BlogCategory.Art,
-    author: recordAuthors[PersonName.MichaelMiller],
-    content: [
-      {
-        id: 1,
-        subheading: "Introduction to the Captivating World of Modeling",
-      },
-      {
-        id: 2,
-        description:
-          "Modeling is a dynamic and multifaceted industry that celebrates the beauty, grace, and individuality of women. From the glitz and glamour of high-fashion runways to the artistry of editorial shoots, modeling offers a platform for self-expression and empowerment. In this comprehensive guide, we'll explore the many facets of this exciting profession and provide you with the tools and insights you need to embark on a successful and fulfilling modeling journey.",
-      },
-      {
-        id: 3,
-        image:
-          "https://c.wallhere.com/images/52/8c/3bd7c22b3a5abe40f7debd9f372d-1520109.jpg!d",
-      },
-      {
-        id: 4,
-        subtitle: "Cultivating Confidence and Self-Love",
-      },
-      {
-        id: 5,
-        description:
-          "Confidence is the cornerstone of a successful modeling career. It's not just about physical attributes; it's about embracing your unique beauty and radiating self-assurance from within. In this section, we'll delve into strategies for building self-confidence, overcoming insecurities, and developing a positive body image that will shine through in every shot and catwalk appearance.",
-      },
-      {
-        id: 6,
-        quote: {
-          author: "Tyra Banks",
-          content:
-            "Embrace your individuality and celebrate your uniqueness. That's what modeling is all about.",
-        },
-      },
-      {
-        id: 7,
-        subtitle: "Mastering the Art of Posing and Movement",
-      },
-      {
-        id: 8,
-        description:
-          "Whether you're posing for a high-fashion editorial or commanding the runway, understanding the art of posing and movement is crucial. We'll explore techniques for achieving flattering angles, conveying emotion through body language, and captivating your audience with grace and poise. From mastering the classic poses to experimenting with avant-garde styles, you'll learn to showcase your best assets and bring your unique personality to life.",
-      },
-      {
-        id: 9,
-        image:
-          "https://c.wallhere.com/photos/76/94/county_blue_light_sunset_summer_sky_sun_abstract-771233.jpg!d",
-      },
-      {
-        id: 10,
-        subtitle: "Building a Successful Modeling Portfolio",
-      },
-      {
-        id: 11,
-        description:
-          "Your modeling portfolio is your calling card, a visual representation of your talents and versatility. In this section, we'll guide you through the process of curating a compelling portfolio that showcases your best work and attracts the attention of agencies and clients. From selecting stunning photographs to crafting a cohesive narrative, we'll cover the essential elements of a standout modeling portfolio.",
-      },
-      {
-        id: 12,
-        subtitle: "Navigating the Modeling Industry",
-      },
-      {
-        id: 13,
-        description:
-          "The modeling industry is a dynamic and ever-evolving landscape, filled with opportunities and challenges. We'll provide insights into the various sectors of the industry, from commercial modeling to high-fashion editorials, and offer practical advice on finding reputable agencies, negotiating contracts, and maintaining a healthy work-life balance. Additionally, we'll discuss the importance of professionalism, networking, and continuous learning to stay ahead in this competitive field.",
-      },
-      {
-        id: 14,
-        quote: {
-          author: "Cara Delevingne",
-          content:
-            "Modeling is not just about looking pretty; it's about being yourself and embracing your individuality.",
-        },
-      },
-      {
-        id: 15,
-        subtitle: "Embracing Diversity and Inclusivity",
-      },
-      {
-        id: 16,
-        description:
-          "In recent years, the modeling industry has undergone a significant transformation, celebrating diversity and inclusivity like never before. In this section, we'll explore the importance of representation and how models of all backgrounds, sizes, and abilities are redefining beauty standards and inspiring confidence in women worldwide. We'll also discuss the role of ethical practices and body positivity in shaping a more inclusive and empowering modeling landscape.",
-      },
-    ],
+    author: recordAuthors[PersonName.DenaliBella],
   }
+
+  // // Initializes the form with default values
+  // let form: BlogPost = {
+  //   title:
+  //     "Unleash Your Inner Supermodel: A Comprehensive Guide to Modeling for Women",
+  //   subtitle:
+  //     "Discover the secrets to a successful and empowering modeling career",
+  //   mainImage:
+  //     "https://c.wallhere.com/images/d0/d0/3c9203dca6873e85879197389228-1520111.jpg!d",
+  //   category: BlogCategory.Art,
+  //   author: recordAuthors[PersonName.MichaelMiller],
+  //   content: [
+  //     {
+  //       id: 1,
+  //       subheading: "Introduction to the Captivating World of Modeling",
+  //     },
+  //     {
+  //       id: 2,
+  //       description:
+  //         "Modeling is a dynamic and multifaceted industry that celebrates the beauty, grace, and individuality of women. From the glitz and glamour of high-fashion runways to the artistry of editorial shoots, modeling offers a platform for self-expression and empowerment. In this comprehensive guide, we'll explore the many facets of this exciting profession and provide you with the tools and insights you need to embark on a successful and fulfilling modeling journey.",
+  //     },
+  //     {
+  //       id: 3,
+  //       image:
+  //         "https://c.wallhere.com/images/52/8c/3bd7c22b3a5abe40f7debd9f372d-1520109.jpg!d",
+  //     },
+  //     {
+  //       id: 4,
+  //       subtitle: "Cultivating Confidence and Self-Love",
+  //     },
+  //     {
+  //       id: 5,
+  //       description:
+  //         "Confidence is the cornerstone of a successful modeling career. It's not just about physical attributes; it's about embracing your unique beauty and radiating self-assurance from within. In this section, we'll delve into strategies for building self-confidence, overcoming insecurities, and developing a positive body image that will shine through in every shot and catwalk appearance.",
+  //     },
+  //     {
+  //       id: 6,
+  //       quote: {
+  //         author: "Tyra Banks",
+  //         content:
+  //           "Embrace your individuality and celebrate your uniqueness. That's what modeling is all about.",
+  //       },
+  //     },
+  //     {
+  //       id: 7,
+  //       subtitle: "Mastering the Art of Posing and Movement",
+  //     },
+  //     {
+  //       id: 8,
+  //       description:
+  //         "Whether you're posing for a high-fashion editorial or commanding the runway, understanding the art of posing and movement is crucial. We'll explore techniques for achieving flattering angles, conveying emotion through body language, and captivating your audience with grace and poise. From mastering the classic poses to experimenting with avant-garde styles, you'll learn to showcase your best assets and bring your unique personality to life.",
+  //     },
+  //     {
+  //       id: 9,
+  //       image:
+  //         "https://c.wallhere.com/photos/76/94/county_blue_light_sunset_summer_sky_sun_abstract-771233.jpg!d",
+  //     },
+  //     {
+  //       id: 10,
+  //       subtitle: "Building a Successful Modeling Portfolio",
+  //     },
+  //     {
+  //       id: 11,
+  //       description:
+  //         "Your modeling portfolio is your calling card, a visual representation of your talents and versatility. In this section, we'll guide you through the process of curating a compelling portfolio that showcases your best work and attracts the attention of agencies and clients. From selecting stunning photographs to crafting a cohesive narrative, we'll cover the essential elements of a standout modeling portfolio.",
+  //     },
+  //     {
+  //       id: 12,
+  //       subtitle: "Navigating the Modeling Industry",
+  //     },
+  //     {
+  //       id: 13,
+  //       description:
+  //         "The modeling industry is a dynamic and ever-evolving landscape, filled with opportunities and challenges. We'll provide insights into the various sectors of the industry, from commercial modeling to high-fashion editorials, and offer practical advice on finding reputable agencies, negotiating contracts, and maintaining a healthy work-life balance. Additionally, we'll discuss the importance of professionalism, networking, and continuous learning to stay ahead in this competitive field.",
+  //     },
+  //     {
+  //       id: 14,
+  //       quote: {
+  //         author: "Cara Delevingne",
+  //         content:
+  //           "Modeling is not just about looking pretty; it's about being yourself and embracing your individuality.",
+  //       },
+  //     },
+  //     {
+  //       id: 15,
+  //       subtitle: "Embracing Diversity and Inclusivity",
+  //     },
+  //     {
+  //       id: 16,
+  //       description:
+  //         "In recent years, the modeling industry has undergone a significant transformation, celebrating diversity and inclusivity like never before. In this section, we'll explore the importance of representation and how models of all backgrounds, sizes, and abilities are redefining beauty standards and inspiring confidence in women worldwide. We'll also discuss the role of ethical practices and body positivity in shaping a more inclusive and empowering modeling landscape.",
+  //     },
+  //   ],
+  // }
 
   let authors: PersonName[] = Object.values(PersonName)
   form.author =
